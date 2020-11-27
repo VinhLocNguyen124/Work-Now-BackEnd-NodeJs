@@ -5,9 +5,6 @@ const bodyParser = require('body-parser');
 const cors = require('cors');
 require('dotenv/config');
 
-//Khi deploy lên heroku thì server sẽ gọi biến PORT ra một cổng ngẫu nhiên, khi dev thì sẽ gọi cổng 3000
-// step 2 -- heroku deployment
-const port = process.env.PORT || 3000;
 
 //Import routes
 const postsRoute = require('./routes/posts');
@@ -39,4 +36,7 @@ mongoose.connect(
 );
 
 //How to we start listening to the server 
-app.listen(port);
+//Khi deploy lên heroku thì server sẽ gọi biến PORT ra một cổng ngẫu nhiên, khi dev thì sẽ gọi cổng 3000
+app.listen(process.env.PORT || 3000, function () {
+    console.log('Server is running...');
+});
