@@ -22,7 +22,9 @@ router.post('/', async (req, res) => {
     //Hàm save() trả về một promise
     try {
         const savedPost = await post.save();
-        res.json(savedPost);
+
+        //trả về khi save thành công
+        res.json({ status: "success" });
     } catch (err) {
         res.json({ message: err });
     }
