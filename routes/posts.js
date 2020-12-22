@@ -21,7 +21,6 @@ router.post('/', async (req, res) => {
         imgurl: req.body.imgurl,
         seescope: req.body.seescope,
         allowcmt: req.body.allowcmt,
-        date: req.body.date,
     });
 
     //Hàm save() trả về một promise
