@@ -5,7 +5,7 @@ const Post = require('../models/Post');
 //Get back all posts
 router.get('/', async (req, res) => {
     try {
-        const posts = await Post.find().reverse();
+        const posts = await Post.find().sort({ _id: -1 });
         res.json(posts);
     } catch (err) {
         res.json({ message: err });
