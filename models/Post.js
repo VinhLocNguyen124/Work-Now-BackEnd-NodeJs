@@ -1,11 +1,27 @@
 const mongoose = require('mongoose');
 
 const PostSchema = mongoose.Schema({
-    title: {
+    emailuser: {
         type: String,
         required: true
     },
-    description: {
+    idpostshare: {
+        type: String,
+        required: true
+    },
+    content: {
+        type: String,
+        required: true
+    },
+    imgurl: {
+        type: String,
+        required: true
+    },
+    seescope: {
+        type: String,
+        required: true
+    },
+    allowcmt: {
         type: String,
         required: true
     },

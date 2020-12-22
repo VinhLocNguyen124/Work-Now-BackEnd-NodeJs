@@ -15,8 +15,13 @@ router.get('/', async (req, res) => {
 //Submit a post
 router.post('/', async (req, res) => {
     const post = new Post({
-        title: req.body.title,
-        description: req.body.description
+        emailuser: req.body.emailuser,
+        idpostshare: req.body.idpostshare,
+        content: req.body.content,
+        imgurl: req.body.imgurl,
+        seescope: req.body.seescope,
+        allowcmt: req.body.allowcmt,
+        date: req.body.date,
     });
 
     //Hàm save() trả về một promise
@@ -24,7 +29,7 @@ router.post('/', async (req, res) => {
         const savedPost = await post.save();
 
         //trả về khi save thành công
-        res.json({ status: "success" });
+        res.json({ status: "success", response: savedPost });
     } catch (err) {
         res.json({ message: err });
     }
