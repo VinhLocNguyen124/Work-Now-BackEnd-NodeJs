@@ -15,7 +15,7 @@ const PostSchema = mongoose.Schema({
     },
     imgurl: {
         type: String,
-        required: true
+        required: false
     },
     seescope: {
         type: String,
