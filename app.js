@@ -8,12 +8,14 @@ require('dotenv/config');
 
 //Import routes
 const postsRoute = require('./routes/posts');
+const usersRoute = require('./routes/users');
 const indexRoute = require('./routes'); // --
 
 //Middleware
 app.use(cors());
 app.use(bodyParser.json());
 app.use('/posts', postsRoute);
+app.use('/users', usersRoute);
 app.use('/', indexRoute);
 
 // step 3 -- heroku deployment
