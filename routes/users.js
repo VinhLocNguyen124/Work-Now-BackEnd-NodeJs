@@ -5,8 +5,8 @@ const User = require('../models/User');
 //Get back all users
 router.get('/', async (req, res) => {
     try {
-        const posts = await Post.find().sort({ _id: -1 });
-        res.json(posts);
+        const users = await User.find().sort({ _id: -1 });
+        res.json(users);
     } catch (err) {
         res.json({ message: err });
     }
