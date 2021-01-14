@@ -19,7 +19,8 @@ router.post('/', async (req, res) => {
         email: req.body.email,
         urlavatar: req.body.urlavatar,
         phone: req.body.phone,
-        address: req.body.address,
+        province: req.body.province,
+        city: req.body.city,
         qrcode: req.body.qrcode,
     });
 
