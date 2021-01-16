@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const UserSchool = require('../models/UserSchool');
+const UserCompany = require('../models/UserCompany');
 
 //Get all users
 router.get('/', async (req, res) => {
@@ -64,6 +65,7 @@ router.get('/:userEmail', async (req, res) => {
     try {
         const oneUser = await User.findOne({ email: req.params.userEmail }).exec();
         const userschool = await UserSchool.find({ iduser: oneUser._id }).exec();
+        const usercompany = await UserCompany.find({ iduser: oneUser._id }).exec();
 
         const newUser = {
             username: oneUser.username,
@@ -74,7 +76,8 @@ router.get('/:userEmail', async (req, res) => {
             city: oneUser.city,
             qrcode: oneUser.qrcode,
             headline: oneUser.headline,
-            schools: userschool
+            schools: userschool,
+            companies: usercompany
         }
 
         res.json(newUser);

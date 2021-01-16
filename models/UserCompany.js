@@ -1,26 +1,18 @@
 const mongoose = require('mongoose');
 
-const CompanySchema = mongoose.Schema({
-    name: {
+const UserCompanySchema = mongoose.Schema({
+    iduser: {
         type: String,
         required: true
     },
-    urlimage: {
+    idcompany: {
         type: String,
         required: false
     },
-    province: {
-        type: String,
-        required: false
-    },
-    city: {
-        type: String,
-        required: false
-    },
-    address: {
+    idposition: {
         type: String,
         required: false
     },
 });
 
-module.exports = mongoose.model('Companys', CompanySchema);
+module.exports = mongoose.model('UserCompanies', UserCompanySchema);
