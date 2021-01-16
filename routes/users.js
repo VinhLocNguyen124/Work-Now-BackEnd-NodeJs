@@ -1,12 +1,17 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const UserSchool = require('../models/UserSchool');
 
-//Get back all users
+//Get all users
 router.get('/', async (req, res) => {
     try {
+
         const users = await User.find().sort({ _id: -1 });
+
+
         res.json(users);
+
     } catch (err) {
         res.json({ message: err });
     }
@@ -14,6 +19,7 @@ router.get('/', async (req, res) => {
 
 //Submit a user
 router.post('/', async (req, res) => {
+
     const user = new User({
         username: req.body.username,
         email: req.body.email,
@@ -22,18 +28,63 @@ router.post('/', async (req, res) => {
         province: req.body.province,
         city: req.body.city,
         qrcode: req.body.qrcode,
+        headline: req.body.headline
     });
 
     //Hàm save() trả về một promise
     try {
-        const savedUser = await user.save()
+        const savedUser = await user.save();
+        const oneUser = await User.findOne({ email: req.body.email }).exec();
+
+        const userschool = new UserSchool({
+            iduser: oneUser._id,
+            schoolname: "",
+            major: "",
+        });
+
+        const savedUserSchool = await userschool.save();
 
         //trả về khi save thành công
-        res.json({ status: "success", response: savedUser });
+        res.json({
+            status: "success", response: {
+                savedUser,
+                savedUserSchool
+            }
+        });
+
     } catch (err) {
         res.json({ message: err });
     }
 
 });
+
+//Specific user
+router.get('/:userEmail', async (req, res) => {
+    try {
+        const oneUser = await User.findOne({ email: req.params.userEmail }).exec();
+        const userschool = await UserSchool.find({ iduser: oneUser._id }).exec();
+
+        oneUser["schools"] = userschool;
+
+        res.json(oneUser);
+    } catch (err) {
+        res.json({ message: err });
+    }
+
+});
+
+// //Update user
+// router.patch('/:postId', async (req, res) => {
+//     try {
+//         const updateUser = await Post.updateOne(
+//             { _id: req.params.postId },
+//             { $set: { title: req.body.title } }
+//         )
+//         res.json(updatePost);
+//     } catch (err) {
+//         res.json({ message: err });
+//     }
+// })
+
 
 module.exports = router;
