@@ -65,7 +65,7 @@ router.get('/:userEmail', async (req, res) => {
         const oneUser = await User.findOne({ email: req.params.userEmail }).exec();
         const userschool = await UserSchool.find({ iduser: oneUser._id }).exec();
 
-        oneUser["schools"] = userschool;
+        oneUser.schools = userschool;
 
         res.json(oneUser);
     } catch (err) {
