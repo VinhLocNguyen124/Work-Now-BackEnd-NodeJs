@@ -63,9 +63,9 @@ router.post('/', async (req, res) => {
 router.get('/:userEmail', async (req, res) => {
     try {
         const oneUser = await User.findOne({ email: req.params.userEmail }).exec();
-        const userschool = await UserSchool.find({ iduser: oneUser._id }).exec();
-
-        oneUser.schools = userschool;
+        const userschool = await UserSchool.find({ iduser: oneUser._id }).exec((err, userschool) => {
+            oneUser.schools = userschool;
+        });
 
         res.json(oneUser);
     } catch (err) {
