@@ -63,11 +63,12 @@ router.post('/', async (req, res) => {
 router.get('/:userEmail', async (req, res) => {
     try {
         const oneUser = await User.findOne({ email: req.params.userEmail }).exec();
-        const userschool = await UserSchool.find({ iduser: oneUser._id }).exec((err, userschool) => {
-            oneUser.schools = userschool;
-        });
+        const userschool = await UserSchool.find({ iduser: oneUser._id }).exec();
 
-        res.json(oneUser);
+        const obj = {
+            name: "Longuyen"
+        }
+        res.json(obj);
     } catch (err) {
         res.json({ message: err });
     }
