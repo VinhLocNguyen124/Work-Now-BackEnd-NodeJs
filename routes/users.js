@@ -65,10 +65,19 @@ router.get('/:userEmail', async (req, res) => {
         const oneUser = await User.findOne({ email: req.params.userEmail }).exec();
         const userschool = await UserSchool.find({ iduser: oneUser._id }).exec();
 
-        const obj = {
-            name: "Longuyen"
+        const newUser = {
+            username: oneUser.username,
+            email: oneUser.email,
+            urlavatar: oneUser.urlavatar,
+            phone: oneUser.phone,
+            province: oneUser.province,
+            city: oneUser.city,
+            qrcode: oneUser.qrcode,
+            headline: oneUser.headline,
+            schools: userschool
         }
-        res.json(obj);
+
+        res.json(newUser);
     } catch (err) {
         res.json({ message: err });
     }
