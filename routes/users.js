@@ -34,6 +34,7 @@ router.post('/', async (req, res) => {
     //Hàm save() trả về một promise
     try {
         const savedUser = await user.save();
+
         const oneUser = await User.findOne({ email: req.body.email }).exec();
 
         const userschool = new UserSchool({
