@@ -71,16 +71,20 @@ router.get('/:userEmail', async (req, res) => {
         const usercompany = await UserCompany.find({ iduser: oneUser._id }).exec();
         const userskill = await UserSkill.find({ iduser: oneUser._id }).exec();
 
-        const companies = usercompany.map(usercomp => {
-            // iduser, idcompany, idposition
-            const company = await Company.findOne({ idcompany: usercomp.idcompany }).exec();
-            const position = await Position.findOne({ idcompany: usercomp.idcompany }).exec();
-            return {
-                _id: usercomp._id,
-                companyname: company.name,
-                position: position.position
-            }
-        });
+        const companies = [];
+        if (usercompany) {
+            companies = usercompany.map(usercomp => {
+                // iduser, idcompany, idposition
+                const company = await Company.findOne({ idcompany: usercomp.idcompany }).exec();
+                const position = await Position.findOne({ idcompany: usercomp.idcompany }).exec();
+                return {
+                    _id: usercomp._id,
+                    companyname: company.name,
+                    position: position.position
+                }
+            });
+        }
+
 
         const newUser = {
             username: oneUser.username,
