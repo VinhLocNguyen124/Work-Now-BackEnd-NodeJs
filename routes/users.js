@@ -35,9 +35,14 @@ router.post('/', async (req, res) => {
         headline: req.body.headline
     });
 
+    const position = new Position({
+        position: "Intern"
+    })
+
     //Hàm save() trả về một promise
     try {
         const savedUser = await user.save();
+        const savedPosition = await position.save();
 
         const oneUser = await User.findOne({ email: req.body.email }).exec();
 
@@ -71,19 +76,19 @@ router.get('/:userEmail', async (req, res) => {
         const usercompany = await UserCompany.find({ iduser: oneUser._id }).exec();
         const userskill = await UserSkill.find({ iduser: oneUser._id }).exec();
 
-        let companies = [];
-        if (usercompany.length > 0) {
-            companies = usercompany.map(usercomp => {
-                // iduser, idcompany, idposition
-                const company = await Company.findOne({ _id: usercomp.idcompany }).exec();
-                const position = await Position.findOne({ _id: usercomp.idcompany }).exec();
-                return {
-                    _id: usercomp._id,
-                    companyname: company.name,
-                    position: position.position
-                }
-            });
-        }
+        // let companies = [];
+        // if (usercompany.length > 0) {
+        //     companies = usercompany.map(usercomp => {
+        //         // iduser, idcompany, idposition
+        //         const company = await Company.findOne({ _id: usercomp.idcompany }).exec();
+        //         const position = await Position.findOne({ _id: usercomp.idposition }).exec();
+        //         return {
+        //             _id: usercomp._id,
+        //             companyname: company.name,
+        //             position: position.position
+        //         }
+        //     });
+        // }
 
 
         const newUser = {
@@ -96,7 +101,7 @@ router.get('/:userEmail', async (req, res) => {
             qrcode: oneUser.qrcode,
             headline: oneUser.headline,
             schools: userschool,
-            companies: companies,
+            companies: usercompany,
             skills: userskill
         }
 
