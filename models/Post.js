@@ -22,13 +22,17 @@ const PostSchema = mongoose.Schema({
         required: true
     },
     allowcmt: {
-        type: String,
+        type: Boolean,
         required: true
     },
     date: {
         type: Date,
         default: Date.now
     },
+    active: {
+        type: Boolean,
+        require: true
+    }
 });
 
 module.exports = mongoose.model('Posts', PostSchema);

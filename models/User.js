@@ -33,6 +33,10 @@ const UserSchema = mongoose.Schema({
         type: String,
         required: false
     },
+    underwork: {
+        type: Boolean,
+        required: false
+    },
 });
 
 module.exports = mongoose.model('Users', UserSchema);

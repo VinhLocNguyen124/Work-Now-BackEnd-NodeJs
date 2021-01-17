@@ -32,28 +32,18 @@ router.post('/', async (req, res) => {
         province: req.body.province,
         city: req.body.city,
         qrcode: req.body.qrcode,
-        headline: req.body.headline
+        headline: req.body.headline,
+        underwork: req.body.underwork,
     });
 
     //Hàm save() trả về một promise
     try {
         const savedUser = await user.save();
 
-        const oneUser = await User.findOne({ email: req.body.email }).exec();
-
-        const userschool = new UserSchool({
-            iduser: oneUser._id,
-            schoolname: "",
-            major: "",
-        });
-
-        const savedUserSchool = await userschool.save();
-
         //trả về khi save thành công
         res.json({
             status: "success", response: {
                 savedUser,
-                savedUserSchool
             }
         });
 
@@ -73,10 +63,10 @@ router.get('/:userEmail', async (req, res) => {
 
         let companies = [];
         if (usercompany.length > 0) {
-            companies = usercompany.map(async (usercomp) => {
+            companies = usercompany.map((usercomp) => {
                 // iduser, idcompany, idposition
-                const company = await Company.findOne({ _id: usercomp.idcompany }).exec();
-                const position = await Position.findOne({ _id: usercomp.idposition }).exec();
+                const company = Company.findOne({ _id: usercomp.idcompany }).exec();
+                const position = Position.findOne({ _id: usercomp.idposition }).exec();
                 return {
                     _id: usercomp._id,
                     companyname: company.name,
@@ -96,6 +86,7 @@ router.get('/:userEmail', async (req, res) => {
             city: oneUser.city,
             qrcode: oneUser.qrcode,
             headline: oneUser.headline,
+            underwork: oneUser.underwork,
             schools: userschool,
             companies: companies,
             skills: userskill
@@ -108,18 +99,30 @@ router.get('/:userEmail', async (req, res) => {
 
 });
 
-// //Update user
-// router.patch('/:postId', async (req, res) => {
-//     try {
-//         const updateUser = await Post.updateOne(
-//             { _id: req.params.postId },
-//             { $set: { title: req.body.title } }
-//         )
-//         res.json(updatePost);
-//     } catch (err) {
-//         res.json({ message: err });
-//     }
-// })
+//Update user
+router.patch('/updateinfo/:userEmail', async (req, res) => {
+    try {
+        const updateUser = await User.updateOne(
+            { _id: req.params.userEmail },
+            {
+                $set: {
+                    username: req.body.username,
+                    email: req.body.email,
+                    urlavatar: req.body.urlavatar,
+                    phone: req.body.phone,
+                    province: req.body.province,
+                    city: req.body.city,
+                    qrcode: req.body.qrcode,
+                    headline: req.body.headline,
+                    underwork: req.body.underwork,
+                }
+            }
+        )
+        res.json(updateUser);
+    } catch (err) {
+        res.json({ message: err });
+    }
+})
 
 
 module.exports = router;

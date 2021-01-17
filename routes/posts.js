@@ -20,7 +20,8 @@ router.post('/', async (req, res) => {
         content: req.body.content,
         imgurl: req.body.imgurl,
         seescope: req.body.seescope,
-        allowcmt: req.body.allowcmt
+        allowcmt: req.body.allowcmt,
+        active: req.body.active,
     });
 
     //Hàm save() trả về một promise
