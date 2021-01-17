@@ -71,19 +71,19 @@ router.get('/:userEmail', async (req, res) => {
         const usercompany = await UserCompany.find({ iduser: oneUser._id }).exec();
         const userskill = await UserSkill.find({ iduser: oneUser._id }).exec();
 
-        // let companies = [];
-        // if (usercompany.length > 0) {
-        //     companies = usercompany.map(usercomp => {
-        //         // iduser, idcompany, idposition
-        //         const company = await Company.findOne({ idcompany: usercomp.idcompany }).exec();
-        //         const position = await Position.findOne({ idcompany: usercomp.idcompany }).exec();
-        //         return {
-        //             _id: usercomp._id,
-        //             companyname: company.name,
-        //             position: position.position
-        //         }
-        //     });
-        // }
+        let companies = [];
+        if (usercompany.length > 0) {
+            companies = usercompany.map(usercomp => {
+                // iduser, idcompany, idposition
+                const company = await Company.findOne({ idcompany: usercomp.idcompany }).exec();
+                const position = await Position.findOne({ idcompany: usercomp.idcompany }).exec();
+                return {
+                    _id: usercomp._id,
+                    companyname: company.name,
+                    position: position.position
+                }
+            });
+        }
 
 
         const newUser = {
@@ -96,7 +96,7 @@ router.get('/:userEmail', async (req, res) => {
             qrcode: oneUser.qrcode,
             headline: oneUser.headline,
             schools: userschool,
-            companies: usercompany,
+            companies: companies,
             skills: userskill
         }
 
