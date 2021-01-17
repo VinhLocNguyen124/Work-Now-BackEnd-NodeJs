@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
     });
 
     const position = new Position({
-        position: "Intern"
+        name: "Intern"
     })
 
     //Hàm save() trả về một promise
@@ -85,7 +85,7 @@ router.get('/:userEmail', async (req, res) => {
         //         return {
         //             _id: usercomp._id,
         //             companyname: company.name,
-        //             position: position.position
+        //             position: position.name
         //         }
         //     });
         // }
