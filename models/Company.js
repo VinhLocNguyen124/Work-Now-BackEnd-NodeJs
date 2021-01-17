@@ -21,6 +21,10 @@ const CompanySchema = mongoose.Schema({
         type: String,
         required: false
     },
+    idposition: {
+        type: String,
+        required: true
+    },
 });
 
 module.exports = mongoose.model('Companies', CompanySchema);

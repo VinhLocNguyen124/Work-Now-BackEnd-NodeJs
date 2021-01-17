@@ -3,6 +3,9 @@ const router = express.Router();
 const User = require('../models/User');
 const UserSchool = require('../models/UserSchool');
 const UserCompany = require('../models/UserCompany');
+const UserSkill = require('../models/UserSkill');
+const Company = require('../models/Company');
+const Position = require('../models/Position');
 
 //Get all users
 router.get('/', async (req, res) => {
@@ -66,6 +69,18 @@ router.get('/:userEmail', async (req, res) => {
         const oneUser = await User.findOne({ email: req.params.userEmail }).exec();
         const userschool = await UserSchool.find({ iduser: oneUser._id }).exec();
         const usercompany = await UserCompany.find({ iduser: oneUser._id }).exec();
+        const userskill = await UserSkill.find({ iduser: oneUser._id }).exec();
+
+        const companies = await usercompany.map(usercomp => {
+            // iduser, idcompany, idposition
+            const company = await Company.findOne({ idcompany: usercomp.idcompany }).exec();
+            const position = await Position.findOne({ idcompany: usercomp.idcompany }).exec();
+            return {
+                _id: usercomp._id,
+                companyname: company.name,
+                position: position.position
+            }
+        })
 
         const newUser = {
             username: oneUser.username,
@@ -77,7 +92,8 @@ router.get('/:userEmail', async (req, res) => {
             qrcode: oneUser.qrcode,
             headline: oneUser.headline,
             schools: userschool,
-            companies: usercompany
+            companies: companies,
+            skills: userskill
         }
 
         res.json(newUser);
