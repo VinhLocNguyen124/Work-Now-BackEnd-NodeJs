@@ -37,6 +37,10 @@ const UserSchema = mongoose.Schema({
         type: Boolean,
         required: false
     },
+    path: {
+        type: String,
+        required: false
+    },
 });
 
 module.exports = mongoose.model('Users', UserSchema);

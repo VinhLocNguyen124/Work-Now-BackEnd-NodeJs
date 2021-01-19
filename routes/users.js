@@ -13,7 +13,6 @@ router.get('/', async (req, res) => {
 
         const users = await User.find().sort({ _id: -1 });
 
-
         res.json(users);
 
     } catch (err) {
@@ -34,6 +33,7 @@ router.post('/', async (req, res) => {
         qrcode: req.body.qrcode,
         headline: req.body.headline,
         underwork: req.body.underwork,
+        path: req.body.path
     });
 
     //Hàm save() trả về một promise
@@ -87,6 +87,7 @@ router.get('/:userEmail', async (req, res) => {
             qrcode: oneUser.qrcode,
             headline: oneUser.headline,
             underwork: oneUser.underwork,
+            path: oneUser.path,
             schools: userschool,
             companies: companies,
             skills: userskill
