@@ -101,7 +101,7 @@ router.get('/:userEmail', async (req, res) => {
 });
 
 //Update user
-router.patch('/updateinfo/:userEmail', async (req, res) => {
+router.put('/updateinfo/:userEmail', async (req, res) => {
     try {
         const updateUser = await User.updateOne(
             { _id: req.params.userEmail },
@@ -113,7 +113,6 @@ router.patch('/updateinfo/:userEmail', async (req, res) => {
                     phone: req.body.phone,
                     province: req.body.province,
                     city: req.body.city,
-                    qrcode: req.body.qrcode,
                     headline: req.body.headline,
                     underwork: req.body.underwork,
                     path: req.body.path
