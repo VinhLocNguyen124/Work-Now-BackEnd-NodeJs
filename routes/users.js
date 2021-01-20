@@ -116,10 +116,15 @@ router.patch('/updateinfo/:userEmail', async (req, res) => {
                     qrcode: req.body.qrcode,
                     headline: req.body.headline,
                     underwork: req.body.underwork,
+                    path: req.body.path
                 }
             }
         )
-        res.json(updateUser);
+        res.json({
+            status: "success", response: {
+                updateUser,
+            }
+        });
     } catch (err) {
         res.json({ message: err });
     }
