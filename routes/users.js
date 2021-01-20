@@ -104,7 +104,7 @@ router.get('/:userEmail', async (req, res) => {
 router.put('/updateinfo/:userEmail', async (req, res) => {
     try {
         const updateUser = await User.updateOne(
-            { _id: req.params.userEmail },
+            { email: req.params.userEmail },
             {
                 $set: {
                     username: req.body.username,
