@@ -7,12 +7,16 @@ const UserSchoolSchema = mongoose.Schema({
     },
     schoolname: {
         type: String,
-        required: false
+        required: true
     },
     major: {
         type: String,
-        required: false
+        required: true
     },
+    schoolyear: {
+        type: String,
+        require: true
+    }
 });
 
 module.exports = mongoose.model('UserSchools', UserSchoolSchema);

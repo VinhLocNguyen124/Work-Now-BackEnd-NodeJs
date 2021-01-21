@@ -70,7 +70,9 @@ router.get('/:userEmail', async (req, res) => {
                 return {
                     _id: usercomp._id,
                     companyname: company.name,
-                    position: position.name
+                    position: position.name,
+                    major: usercomp.major,
+                    expyear: usercomp.expyear
                 }
             });
         }

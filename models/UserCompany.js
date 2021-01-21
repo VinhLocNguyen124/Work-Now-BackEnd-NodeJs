@@ -7,12 +7,20 @@ const UserCompanySchema = mongoose.Schema({
     },
     idcompany: {
         type: String,
-        required: false
+        required: true
     },
     idposition: {
         type: String,
-        required: false
+        required: true
     },
+    major: {
+        type: String,
+        require: true
+    },
+    expyear: {
+        type: String,
+        require: true
+    }
 });
 
 // 600390d7e592f7bc8d0b39ef: comp
