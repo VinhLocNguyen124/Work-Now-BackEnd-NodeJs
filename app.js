@@ -10,6 +10,7 @@ require('dotenv/config');
 const postsRoute = require('./routes/posts');
 const usersRoute = require('./routes/users');
 const companiesRoute = require('./routes/companies');
+const positionsRoute = require('./routes/position');
 const indexRoute = require('./routes'); // --
 
 //Middleware
@@ -18,6 +19,7 @@ app.use(bodyParser.json());
 app.use('/posts', postsRoute);
 app.use('/users', usersRoute);
 app.use('/companies', companiesRoute);
+app.use('/positions', positionsRoute);
 app.use('/', indexRoute);
 
 // step 3 -- heroku deployment
