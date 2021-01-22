@@ -70,8 +70,8 @@ router.get('/:userEmail', async (req, res) => {
             const position = Position.findOne({ _id: usercomp.idposition }).exec();
             return {
                 _id: usercomp._id,
-                companyname: usercomp.idcompany,
-                position: usercomp.idposition,
+                companyname: company.name,
+                position: position.name,
                 major: usercomp.major,
                 expyear: usercomp.expyear
             }
@@ -79,7 +79,8 @@ router.get('/:userEmail', async (req, res) => {
 
         let companies = [];
         if (usercompany.length > 0) {
-            companies = usercompany.map(usercomp => generateCompanyItem(usercomp));
+            companies = await Promise.all(usercompany.map(async usercomp => generateCompanyItem(usercomp)));
+
         }
 
 
