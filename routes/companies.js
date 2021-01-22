@@ -25,7 +25,7 @@ router.post('/addexp', async (req, res) => {
 
         if (idcompany !== "") {
 
-            const usercompany = new User({
+            const usercompany = new UserCompany({
                 iduser: req.body.iduser,
                 idcompany: req.body.companyid,
                 idposition: req.body.positionid,
@@ -47,7 +47,7 @@ router.post('/addexp', async (req, res) => {
 
             const savedCompany = await company.save();
 
-            const usercompany = new User({
+            const usercompany = new UserCompany({
                 iduser: req.body.iduser,
                 idcompany: savedCompany._id,
                 idposition: req.body.positionid,
