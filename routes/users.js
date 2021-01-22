@@ -70,8 +70,8 @@ router.get('/:userEmail', async (req, res) => {
             const position = Position.findOne({ _id: usercomp.idposition }).exec();
             return {
                 _id: usercomp._id,
-                companyname: company.name,
-                position: position.name,
+                companyname: usercomp.idcompany,
+                position: usercomp.idposition,
                 major: usercomp.major,
                 expyear: usercomp.expyear
             }
