@@ -19,8 +19,6 @@ router.post('/addexp', async (req, res) => {
 
     const idcompany = req.body.companyid;
 
-
-
     try {
 
         if (idcompany !== "") {

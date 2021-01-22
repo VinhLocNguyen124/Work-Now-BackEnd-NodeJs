@@ -10,6 +10,7 @@ require('dotenv/config');
 const postsRoute = require('./routes/posts');
 const usersRoute = require('./routes/users');
 const companiesRoute = require('./routes/companies');
+const schoolsRoute = require('./routes/schools');
 const positionsRoute = require('./routes/position');
 const indexRoute = require('./routes'); // --
 
@@ -20,6 +21,7 @@ app.use('/posts', postsRoute);
 app.use('/users', usersRoute);
 app.use('/companies', companiesRoute);
 app.use('/positions', positionsRoute);
+app.use('/schools', schoolsRoute);
 app.use('/', indexRoute);
 
 // step 3 -- heroku deployment
