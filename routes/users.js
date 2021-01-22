@@ -65,8 +65,8 @@ router.get('/:userEmail', async (req, res) => {
         if (usercompany.length > 0) {
             companies = usercompany.map((usercomp) => {
                 // iduser, idcompany, idposition
-                const company = Company.findOne({ _id: usercomp.idcompany }).exec();
-                const position = Position.findOne({ _id: usercomp.idposition }).exec();
+                const company = await Company.findOne({ _id: usercomp.idcompany }).exec();
+                const position = await Position.findOne({ _id: usercomp.idposition }).exec();
                 return {
                     _id: usercomp._id,
                     companyname: company.name,
