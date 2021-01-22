@@ -64,22 +64,20 @@ router.get('/:userEmail', async (req, res) => {
         const usercompany = await UserCompany.find({ iduser: oneUser._id }).exec();
         const userskill = await UserSkill.find({ iduser: oneUser._id }).exec();
 
-        const generateCompanyItem = (usercomp) => {
-            // iduser, idcompany, idposition
-            const company = Company.findOne({ _id: usercomp.idcompany }).exec();
-            const position = Position.findOne({ _id: usercomp.idposition }).exec();
-            return {
-                _id: usercomp._id,
-                companyname: company.name,
-                position: position.name,
-                major: usercomp.major,
-                expyear: usercomp.expyear
-            }
-        }
-
         let companies = [];
         if (usercompany.length > 0) {
-            companies = await Promise.all(usercompany.map(async usercomp => generateCompanyItem(usercomp)));
+            companies = await Promise.all(usercompany.map(async usercomp => {
+                // iduser, idcompany, idposition
+                const company = await Company.findOne({ _id: usercomp.idcompany }).exec();
+                const position = await Position.findOne({ _id: usercomp.idposition }).exec();
+                return {
+                    _id: usercomp._id,
+                    companyname: company.name,
+                    position: position.name,
+                    major: usercomp.major,
+                    expyear: usercomp.expyear
+                }
+            }));
 
         }
 
