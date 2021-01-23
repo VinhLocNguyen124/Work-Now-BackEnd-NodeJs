@@ -88,6 +88,7 @@ router.get('/:userEmail', async (req, res) => {
                 return {
                     _id: item._id,
                     name: skill.name,
+                    type: skill.type,
                     important: item.bestskill
                 }
             }));
