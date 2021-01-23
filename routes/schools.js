@@ -65,5 +65,22 @@ router.put('/updateedu/:userschoolid', async (req, res) => {
 
 });
 
+//Delete user edu
+router.delete('/deleteedu/:userschoolid', async (req, res) => {
+
+    try {
+
+        const deleteUserSchool = await UserSchool.deleteOne({ _id: req.params.userschoolid })
+        res.json({
+            status: "success", response: {
+                deleteUserSchool,
+            }
+        });
+    } catch (err) {
+        res.json({ message: err });
+    }
+
+});
+
 
 module.exports = router;
