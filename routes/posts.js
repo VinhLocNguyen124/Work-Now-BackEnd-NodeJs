@@ -5,15 +5,25 @@ const User = require('../models/User');
 const LikePost = require('../models/LikePost');
 
 //Get  all posts
-router.get('/', async (req, res) => {
+router.get('/:idcurrentuser', async (req, res) => {
     try {
+        const idCurrentUser = req.params.idcurrentuser;
+
         const posts = await Post.find().sort({ _id: -1 });
 
         let newListPost = [];
         if (posts.length > 0) {
             newListPost = await Promise.all(posts.map(async item => {
+                let liked = false;
 
                 const user = await User.findOne({ email: item.emailuser }).exec();
+                const likeposts = await LikePost.find({ iduser: idCurrentUser });
+
+                likeposts.forEach(likepost => {
+                    if (likepost.idpost === item._id) {
+                        liked = true
+                    }
+                })
 
                 return {
                     _id: item._id,
@@ -28,7 +38,8 @@ router.get('/', async (req, res) => {
                     active: item.active,
                     username: user.username,
                     headline: user.headline,
-                    urlavatar: user.urlavatar
+                    urlavatar: user.urlavatar,
+                    liked: liked,
                 }
             }));
         }
