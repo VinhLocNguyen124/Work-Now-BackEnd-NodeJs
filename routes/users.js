@@ -6,6 +6,7 @@ const UserCompany = require('../models/UserCompany');
 const UserSkill = require('../models/UserSkill');
 const Company = require('../models/Company');
 const Position = require('../models/Position');
+const Skill = require('../models/Skill');
 
 //Get all users
 router.get('/', async (req, res) => {
@@ -76,8 +77,22 @@ router.get('/:userEmail', async (req, res) => {
                     expyear: usercomp.expyear
                 }
             }));
-
         }
+
+        let skills = [];
+        if (userskill.length > 0) {
+            skills = await Promise.all(userskill.map(async item => {
+                // iduser, idcompany, idposition
+                const skill = await Company.findOne({ _id: item.idskill }).exec();
+
+                return {
+                    _id: item._id,
+                    name: skill.name,
+                    important: skill.bestskill
+                }
+            }));
+        }
+
 
         const newUser = {
             _id: oneUser._id,
@@ -93,7 +108,7 @@ router.get('/:userEmail', async (req, res) => {
             path: oneUser.path,
             schools: userschool,
             companies: companies,
-            skills: userskill
+            skills: skills
         }
 
         res.json(newUser);
