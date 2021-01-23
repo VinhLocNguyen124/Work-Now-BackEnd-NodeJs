@@ -79,9 +79,9 @@ router.get('/:userEmail', async (req, res) => {
             }));
         }
 
-        let skills = [];
+        let userSkills = [];
         if (userskill.length > 0) {
-            skills = await Promise.all(userskill.map(async item => {
+            userSkills = await Promise.all(userskill.map(async item => {
                 // iduser, idcompany, idposition
                 const skill = await Company.findOne({ _id: item.idskill }).exec();
 
@@ -108,7 +108,7 @@ router.get('/:userEmail', async (req, res) => {
             path: oneUser.path,
             schools: userschool,
             companies: companies,
-            skills: skills
+            skills: userSkills
         }
 
         res.json(newUser);
