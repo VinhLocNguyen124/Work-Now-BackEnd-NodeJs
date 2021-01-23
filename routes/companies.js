@@ -68,7 +68,7 @@ router.post('/addexp', async (req, res) => {
     }
 });
 
-//Update user
+//Update user exp
 router.put('/updateexp/:usercompid', async (req, res) => {
 
     try {
@@ -91,6 +91,23 @@ router.put('/updateexp/:usercompid', async (req, res) => {
         res.json({
             status: "success", response: {
                 updateUserCompany,
+            }
+        });
+    } catch (err) {
+        res.json({ message: err });
+    }
+
+});
+
+//Delete user exp
+router.delete('/deleteexp/:usercompid', async (req, res) => {
+
+    try {
+
+        const deleteUserCompany = await UserCompany.deleteOne({ _id: req.params.usercompid })
+        res.json({
+            status: "success", response: {
+                deleteUserCompany,
             }
         });
     } catch (err) {
