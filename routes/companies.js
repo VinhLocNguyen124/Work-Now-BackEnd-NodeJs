@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Company = require('../models/Company');
+const Position = require('../models/Position');
 const User = require('../models/User');
 const UserCompany = require('../models/UserCompany');
 
@@ -65,6 +66,37 @@ router.post('/addexp', async (req, res) => {
     } catch (err) {
         res.json({ message: err });
     }
+});
+
+//Update user
+router.put('/updateexp/:usercompid', async (req, res) => {
+
+    try {
+
+        const company = await Company.findOne({ name: req.body.companyname }).exec();
+        const position = await Position.findOne({ name: req.body.positionname }).exec();
+
+        const updateUserCompany = await UserCompany.updateOne(
+            { _id: req.params.usercompid },
+            {
+                $set: {
+                    iduser: req.body.iduser,
+                    idcompany: company._id,
+                    idposition: position._id,
+                    major: req.body.major,
+                    expyear: req.body.expyear
+                }
+            }
+        )
+        res.json({
+            status: "success", response: {
+                updateUserCompany,
+            }
+        });
+    } catch (err) {
+        res.json({ message: err });
+    }
+
 });
 
 

@@ -56,8 +56,6 @@ router.post('/', async (req, res) => {
 //Specific user
 router.get('/:userEmail', async (req, res) => {
 
-
-
     try {
         const oneUser = await User.findOne({ email: req.params.userEmail }).exec();
         const userschool = await UserSchool.find({ iduser: oneUser._id }).exec();
@@ -80,7 +78,6 @@ router.get('/:userEmail', async (req, res) => {
             }));
 
         }
-
 
         const newUser = {
             _id: oneUser._id,
