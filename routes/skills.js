@@ -9,7 +9,7 @@ const UserSkill = require('../models/UserSkill');
 router.get('/', async (req, res) => {
     try {
 
-        const skills = await Skill.find().sort({ _id: -1 });
+        const skills = await Skill.find();
 
         res.json(skills);
 
