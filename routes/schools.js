@@ -38,5 +38,32 @@ router.post('/addedu', async (req, res) => {
     }
 });
 
+//Update user edu
+router.put('/updateedu/:userschoolid', async (req, res) => {
+
+    try {
+
+        const updateUserSchool = await UserSchool.updateOne(
+            { _id: req.params.userschoolid },
+            {
+                $set: {
+                    iduser: req.body.iduser,
+                    schoolname: req.body.schoolname,
+                    major: req.body.major,
+                    schoolyear: req.body.schoolyear
+                }
+            }
+        )
+        res.json({
+            status: "success", response: {
+                updateUserSchool,
+            }
+        });
+    } catch (err) {
+        res.json({ message: err });
+    }
+
+});
+
 
 module.exports = router;
