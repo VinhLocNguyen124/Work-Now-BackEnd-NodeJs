@@ -1,12 +1,37 @@
 const express = require('express');
 const router = express.Router();
 const Post = require('../models/Post');
+const User = require('../models/User');
 
-//Get back all posts
+//Get  all posts
 router.get('/', async (req, res) => {
     try {
         const posts = await Post.find().sort({ _id: -1 });
-        res.json(posts);
+        const newListPost = [];
+        if (posts.length > 0) {
+            newListPost = await Promise.all(posts.map(async item => {
+
+                const user = await User.findOne({ email: item.emailuser }).exec();
+
+                return {
+                    emailuser: item.emailuser,
+                    idpostshare: item.idpostshare,
+                    content: item.content,
+                    imgurl: item.imgurl,
+                    pdfurl: item.pdfurl,
+                    seescope: item.seescope,
+                    allowcmt: item.allowcmt,
+                    formal: item.formal,
+                    active: item.active,
+
+                    username: user.username,
+                    headline: user.headline,
+                    urlavatar: user.urlavatar
+                }
+            }));
+        }
+
+        res.json(newListPost);
     } catch (err) {
         res.json({ message: err });
     }
