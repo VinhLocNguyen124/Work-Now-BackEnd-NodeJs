@@ -64,6 +64,24 @@ router.put('/updateskill/:userskillid', async (req, res) => {
 
 });
 
+//Delete user skill
+router.delete('/deleteskill/:userskillid', async (req, res) => {
+
+    try {
+
+        const deleteUserSkill = await UserSkill.deleteOne({ _id: req.params.userskillid })
+
+        res.json({
+            status: "success", response: {
+                deleteUserSkill,
+            }
+        });
+    } catch (err) {
+        res.json({ message: err });
+    }
+
+});
+
 //Submit one user skill
 router.post('/', async (req, res) => {
 
