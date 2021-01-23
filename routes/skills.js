@@ -23,7 +23,7 @@ router.post('/', async (req, res) => {
 
     const skill = new Skill({
         username: req.body.username,
-        email: req.body.email,
+        email: req.body.email
     });
 
     const arrSkill = req.body.array;
@@ -49,16 +49,16 @@ router.post('/', async (req, res) => {
 //Submit one user skill
 router.post('/', async (req, res) => {
 
-    const userskill = new UserSkill({
+    const userskills = new UserSkill({
         iduser: req.body.iduser,
         idskill: req.body.idskill,
-        bestskill: req.body.bestskill,
+        bestskill: req.body.bestskill
     });
 
     //Hàm save() trả về một promise
     try {
 
-        const savedUserSkill = await userskill.save();
+        const savedUserSkill = await userskills.save();
 
         //trả về khi save thành công
         res.json({
@@ -72,10 +72,5 @@ router.post('/', async (req, res) => {
     }
 
 });
-
-
-
-
-
 
 module.exports = router;
