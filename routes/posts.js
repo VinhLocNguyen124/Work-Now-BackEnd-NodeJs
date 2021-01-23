@@ -19,8 +19,10 @@ router.post('/', async (req, res) => {
         idpostshare: req.body.idpostshare,
         content: req.body.content,
         imgurl: req.body.imgurl,
+        pdfurl: req.body.pdfurl,
         seescope: req.body.seescope,
         allowcmt: req.body.allowcmt,
+        formal: req.body.formal,
         active: req.body.active,
     });
 

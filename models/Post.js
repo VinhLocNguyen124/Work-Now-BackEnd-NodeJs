@@ -17,6 +17,10 @@ const PostSchema = mongoose.Schema({
         type: String,
         required: false
     },
+    pdfurl: {
+        type: String,
+        required: false
+    },
     seescope: {
         type: String,
         required: true
@@ -28,6 +32,10 @@ const PostSchema = mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
+    },
+    formal: {
+        type: Boolean,
+        require: true
     },
     active: {
         type: Boolean,
