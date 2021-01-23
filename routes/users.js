@@ -83,7 +83,7 @@ router.get('/:userEmail', async (req, res) => {
         if (userskill.length > 0) {
             userSkills = await Promise.all(userskill.map(async item => {
                 // iduser, idcompany, idposition
-                const skill = await Company.findOne({ _id: item.idskill }).exec();
+                const skill = await Skill.findOne({ _id: item.idskill }).exec();
 
                 return {
                     _id: item._id,
