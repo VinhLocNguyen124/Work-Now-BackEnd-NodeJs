@@ -7,6 +7,7 @@ const User = require('../models/User');
 router.get('/', async (req, res) => {
     try {
         const posts = await Post.find().sort({ _id: -1 });
+
         const newListPost = [];
         if (posts.length > 0) {
             newListPost = await Promise.all(posts.map(async item => {
@@ -14,6 +15,7 @@ router.get('/', async (req, res) => {
                 const user = await User.findOne({ email: item.emailuser }).exec();
 
                 return {
+                    _id: item._id,
                     emailuser: item.emailuser,
                     idpostshare: item.idpostshare,
                     content: item.content,
@@ -23,7 +25,6 @@ router.get('/', async (req, res) => {
                     allowcmt: item.allowcmt,
                     formal: item.formal,
                     active: item.active,
-
                     username: user.username,
                     headline: user.headline,
                     urlavatar: user.urlavatar
