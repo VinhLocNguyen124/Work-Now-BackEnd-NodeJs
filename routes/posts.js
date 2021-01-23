@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
     try {
         const posts = await Post.find().sort({ _id: -1 });
 
-        const newListPost = [];
+        let newListPost = [];
         if (posts.length > 0) {
             newListPost = await Promise.all(posts.map(async item => {
 
