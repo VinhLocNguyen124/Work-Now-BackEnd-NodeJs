@@ -24,25 +24,45 @@ router.get('/', async (req, res) => {
 //         username: req.body.username,
 //         email: req.body.email
 //     });
-
 //     const arrSkill = req.body.array;
-
 //     //Hàm save() trả về một promise
-//     try {
-
+//    try {
 //         Skill.insertMany(arrSkill, function (error, docs) { });
-
 //         //trả về khi save thành công
 //         res.json({
 //             status: "success", response: {
 //                 savedUser,
 //             }
 //         });
-
 //     } catch (err) {
 //         res.json({ message: err });
 //     }
 // });
+
+//Update user edu
+router.put('/updateskill/:userskillid', async (req, res) => {
+
+    try {
+
+        const updateUserSkill = await UserSkill.updateOne(
+            { _id: req.params.userskillid },
+            {
+                $set: {
+                    bestskill: req.body.bestskill
+
+                }
+            }
+        )
+        res.json({
+            status: "success", response: {
+                updateUserSkill,
+            }
+        });
+    } catch (err) {
+        res.json({ message: err });
+    }
+
+});
 
 //Submit one user skill
 router.post('/', async (req, res) => {
