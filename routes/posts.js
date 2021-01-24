@@ -8,6 +8,25 @@ const Request = require('../models/Request');
 
 //Get  all posts
 router.get('/:emailcurrentuser', async (req, res) => {
+
+    const postSkeleton = {
+        _id: "a0",
+        emailuser: "",
+        idpostshare: "",
+        content: "",
+        imgurl: "",
+        pdfurl: "",
+        seescope: "anyone",
+        allowcmt: true,
+        formal: true,
+        active: true,
+        date: "01/01/1900",
+        username: "",
+        headline: "",
+        urlavatar: "",
+        liked: false,
+    }
+
     try {
 
         const user = await User.findOne({ email: req.params.emailcurrentuser }).exec();
@@ -15,8 +34,8 @@ router.get('/:emailcurrentuser', async (req, res) => {
 
         const posts = await Post.find().sort({ _id: -1 });
 
-        let newListPost = [];
-        let newListFriendPost = [];
+        let newListPost = [postSkeleton];
+        let newListFriendPost = [postSkeleton];
         if (posts.length > 0) {
             newListPost = await Promise.all(posts.map(async item => {
 
@@ -25,6 +44,7 @@ router.get('/:emailcurrentuser', async (req, res) => {
                 const request = await Request.findOne({ idusersend: idCurrentUser, iduserrecieve: user._id, status: "done" });
                 const request1 = await Request.findOne({ idusersend: user._id, iduserrecieve: idCurrentUser, status: "done" });
 
+                //Kiểm tra posts nào của connector thì mới push, chỉ lấy của bạn
                 if (request || request1) {
                     newListFriendPost.push({
                         _id: item._id,
