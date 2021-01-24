@@ -8,11 +8,11 @@ const Request = require('../models/Request');
 //Specific post
 router.get('/specific/:postId', async (req, res) => {
     try {
-        // const userCurrent = await User.findOne({ email: req.body.emailcurrentuser }).exec();
-        // const idCurrentUser = userCurrent._id;
-        const post = await Post.findById(req.params.postId);
+        const userCurrent = await User.findOne({ email: req.body.emailcurrentuser }).exec();
+        const idCurrentUser = userCurrent._id;
+        const post = await Post.findOne({ _id: req.params.postId });
         const userPost = await User.findOne({ email: item.emailuser }).exec();
-        // const likepost = await LikePost.findOne({ idpost: post._id, iduser: idCurrentUser });
+        const likepost = await LikePost.findOne({ idpost: post._id, iduser: idCurrentUser });
 
         const newPost = {
             _id: post._id,
