@@ -98,11 +98,11 @@ router.post('/', async (req, res) => {
                 })
             });
 
-            if (oneUser.province === requirement.province) {
+            if (oneUser.province === req.province) {
                 pointuser += 10;
             }
 
-            if (oneUser.city === requirement.city) {
+            if (oneUser.city === req.city) {
                 pointuser += 10;
             }
 
@@ -114,18 +114,18 @@ router.post('/', async (req, res) => {
 
         }));
 
-        if (idpotentialuser !== "") {
-            const notifi = new Notification({
-                type: "candidate",
-                iduserrecieve: req.body.iduser,
-                idpost: "",
-                idmatcheduser: idpotentialuser,
-                content: "Đã tìm thấy ứng viên phù hợp",
-                read: false,
-            });
 
-            const savedNoti = await notifi.save()
-        }
+        const notifi = new Notification({
+            type: "candidate",
+            iduserrecieve: req.body.iduser,
+            idpost: "",
+            idmatcheduser: idpotentialuser,
+            content: "Đã tìm thấy ứng viên phù hợp",
+            read: false,
+        });
+
+        const savedNoti = await notifi.save()
+
 
 
 
