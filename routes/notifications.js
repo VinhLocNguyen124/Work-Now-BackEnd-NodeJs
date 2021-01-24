@@ -5,7 +5,6 @@ const Requirement = require('../models/Requirement');
 const Company = require('../models/Company');
 const RequirementSkill = require('../models/RequirementSkill');
 const Notification = require('../models/Notification');
-const User = require('../models/User');
 
 //Submit one  requirement
 router.get('/:iduser', async (req, res) => {
