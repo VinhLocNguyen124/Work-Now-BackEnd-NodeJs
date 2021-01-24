@@ -30,4 +30,34 @@ router.post('/', async (req, res) => {
 
 });
 
+//Check relationship
+router.post('/checkrelationship', async (req, res) => {
+
+    //Hàm save() trả về một promise
+    try {
+        const relation = await Request.findOne({ idusersend: req.body.idusersend, iduserrecieve: req.body.iduserrecieve });
+
+        if (relation) {
+            if (relation.status === "pending") {
+                res.json({
+                    status: "waiting",
+                });
+            } else {
+                res.json({
+                    status: "yet",
+                });
+            }
+        } else {
+            res.json({
+                status: "not",
+            });
+        }
+
+
+    } catch (err) {
+        res.json({ message: err });
+    }
+
+});
+
 module.exports = router;
