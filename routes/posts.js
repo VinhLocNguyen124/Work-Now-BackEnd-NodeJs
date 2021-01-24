@@ -19,17 +19,8 @@ router.post('/:emailcurrentuser', async (req, res) => {
                 let liked = false;
 
                 const user = await User.findOne({ email: item.emailuser }).exec();
-                const likeposts = await LikePost.find({ iduser: idCurrentUser });
+                const likepost = await LikePost.findOne({ idpost: item._id, iduser: idCurrentUser });
 
-                // await Promise.all(likeposts.map(async (likepost) => {
-                //     if (likepost.idpost === item._id) {
-                //         liked = true;
-                //     }
-                // }));
-
-                if (likeposts.some(e => e.idpost === item._id)) {
-                    liked = true;
-                }
 
                 return {
                     _id: item._id,
@@ -45,7 +36,7 @@ router.post('/:emailcurrentuser', async (req, res) => {
                     username: user.username,
                     headline: user.headline,
                     urlavatar: user.urlavatar,
-                    liked: liked,
+                    liked: likepost ? true : false,
                 }
             }));
         }
