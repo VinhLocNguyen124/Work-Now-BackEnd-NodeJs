@@ -5,9 +5,11 @@ const User = require('../models/User');
 const LikePost = require('../models/LikePost');
 
 //Get  all posts
-router.get('/:idcurrentuser', async (req, res) => {
+router.get('/:emailcurrentuser', async (req, res) => {
     try {
-        const idCurrentUser = req.params.idcurrentuser;
+
+        const user = await User.findOne({ email: req.params.emailcurrentuser }).exec();
+        const idCurrentUser = user._id;
 
         const posts = await Post.find().sort({ _id: -1 });
 
