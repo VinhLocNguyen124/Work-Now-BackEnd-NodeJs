@@ -6,7 +6,7 @@ const LikePost = require('../models/LikePost');
 const Request = require('../models/Request');
 
 //Specific post
-router.post('/:postId', async (req, res) => {
+router.get('/:postId', async (req, res) => {
     try {
         const userCurrent = await User.findOne({ email: req.body.emailcurrentuser }).exec();
         const idCurrentUser = userCurrent._id;
