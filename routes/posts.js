@@ -93,6 +93,26 @@ router.post('/likepost', (req, res) => {
             }
         });
     })
+})
+
+//User dislike post
+router.post('/dislikepost', async (req, res) => {
+
+    try {
+        const deleteLikePost = await LikePost.deleteMany({
+            idpost: req.body.idpost,
+            iduser: req.body.iduser
+        });
+
+        res.json({
+            status: "success", response: {
+                deleteLikePost,
+            }
+        });
+    } catch (error) {
+        res.json({ message: err });
+    }
+
 
 })
 
