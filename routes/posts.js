@@ -141,7 +141,7 @@ router.get('/:emailcurrentuser', async (req, res) => {
             }));
         }
 
-        if (newListFriendPost.length === 0) {
+        if (newListFriendPost.length < 50) {
             newListFriendPost = newListPost;
         }
 
