@@ -5,6 +5,39 @@ const User = require('../models/User');
 const LikePost = require('../models/LikePost');
 const Request = require('../models/Request');
 
+//Specific post
+router.get('/specificpost/:postId/:emailcurrentuser', async (req, res) => {
+    try {
+        const userCurrent = await User.findOne({ email: req.params.emailcurrentuser }).exec();
+        const idCurrentUser = userCurrent._id;
+        const post = await Post.findById(req.params.postId);
+        const userPost = await User.findOne({ email: item.emailuser }).exec();
+        const likepost = await LikePost.findOne({ idpost: post._id, iduser: idCurrentUser });
+
+        const newPost = {
+            _id: post._id,
+            emailuser: post.emailuser,
+            idpostshare: post.idpostshare,
+            content: post.content,
+            imgurl: post.imgurl,
+            pdfurl: post.pdfurl,
+            seescope: post.seescope,
+            allowcmt: post.allowcmt,
+            formal: post.formal,
+            active: post.active,
+            date: post.date,
+            username: userPost.username,
+            headline: userPost.headline,
+            urlavatar: userPost.urlavatar,
+            liked: likepost ? true : false,
+        }
+
+        res.json(newPost);
+    } catch (err) {
+        res.json({ message: err });
+    }
+
+});
 
 //Get  all posts
 router.get('/:emailcurrentuser', async (req, res) => {
@@ -162,20 +195,9 @@ router.post('/dislikepost', async (req, res) => {
     } catch (error) {
         res.json({ message: err });
     }
-
-
 })
 
-// //Specific post
-// router.get('/:postId', async (req, res) => {
-//     try {
-//         const post = await Post.findById(req.params.postId);
-//         res.json(post);
-//     } catch (err) {
-//         res.json({ message: err });
-//     }
 
-// });
 
 // //Delete post 
 // router.delete('/:postId', async (req, res) => {
