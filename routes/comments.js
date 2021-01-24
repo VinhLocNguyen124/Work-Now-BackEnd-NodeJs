@@ -23,7 +23,6 @@ router.post('/', async (req, res) => {
                 savedComment,
             }
         });
-
     } catch (err) {
         res.json({ message: err });
     }
