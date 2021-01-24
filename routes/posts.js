@@ -32,6 +32,7 @@ router.get('/:emailcurrentuser', async (req, res) => {
                     allowcmt: item.allowcmt,
                     formal: item.formal,
                     active: item.active,
+                    date: item.date,
                     username: user.username,
                     headline: user.headline,
                     urlavatar: user.urlavatar,
