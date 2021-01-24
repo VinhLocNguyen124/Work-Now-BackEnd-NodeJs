@@ -21,15 +21,18 @@ router.post('/:emailcurrentuser', async (req, res) => {
                 const user = await User.findOne({ email: item.emailuser }).exec();
                 const likeposts = await LikePost.find({ iduser: idCurrentUser });
 
+                // await Promise.all(likeposts.map(async (likepost) => {
+                //     if (likepost.idpost === item._id) {
+                //         liked = true;
+                //     }
+                // }));
+
                 for (const likepost of likeposts) {
-
-                }
-
-                await Promise.all(likeposts.map(async (likepost) => {
                     if (likepost.idpost === item._id) {
                         liked = true;
+                        break;
                     }
-                }));
+                }
 
                 return {
                     _id: item._id,
