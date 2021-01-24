@@ -3,6 +3,8 @@ const router = express.Router();
 const Post = require('../models/Post');
 const User = require('../models/User');
 const LikePost = require('../models/LikePost');
+const Request = require('../models/Request');
+
 
 //Get  all posts
 router.get('/:emailcurrentuser', async (req, res) => {
@@ -16,28 +18,32 @@ router.get('/:emailcurrentuser', async (req, res) => {
         let newListPost = [];
         if (posts.length > 0) {
             newListPost = await Promise.all(posts.map(async item => {
-                let liked = false;
 
                 const user = await User.findOne({ email: item.emailuser }).exec();
                 const likepost = await LikePost.findOne({ idpost: item._id, iduser: idCurrentUser });
+                const request = await Request.findOne({ idusersend: idCurrentUser, iduserrecieve: user._id, status: "done" });
+                const request1 = await Request.findOne({ idusersend: user._id, iduserrecieve: idCurrentUser, status: "done" });
 
-                return {
-                    _id: item._id,
-                    emailuser: item.emailuser,
-                    idpostshare: item.idpostshare,
-                    content: item.content,
-                    imgurl: item.imgurl,
-                    pdfurl: item.pdfurl,
-                    seescope: item.seescope,
-                    allowcmt: item.allowcmt,
-                    formal: item.formal,
-                    active: item.active,
-                    date: item.date,
-                    username: user.username,
-                    headline: user.headline,
-                    urlavatar: user.urlavatar,
-                    liked: likepost ? true : false,
+                if (request || request1) {
+                    return {
+                        _id: item._id,
+                        emailuser: item.emailuser,
+                        idpostshare: item.idpostshare,
+                        content: item.content,
+                        imgurl: item.imgurl,
+                        pdfurl: item.pdfurl,
+                        seescope: item.seescope,
+                        allowcmt: item.allowcmt,
+                        formal: item.formal,
+                        active: item.active,
+                        date: item.date,
+                        username: user.username,
+                        headline: user.headline,
+                        urlavatar: user.urlavatar,
+                        liked: likepost ? true : false,
+                    }
                 }
+
             }));
         }
 
