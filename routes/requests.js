@@ -56,6 +56,8 @@ router.post('/checkrelationship', async (req, res) => {
     try {
         const relation = await Request.findOne({ idusersend: req.body.idusersend, iduserrecieve: req.body.iduserrecieve });
 
+        const relation1 = await Request.findOne({ idusersend: req.body.iduserrecieve, iduserrecieve: req.body.idusersend });
+
         if (relation) {
             if (relation.status === "pending") {
                 res.json({
@@ -67,10 +69,25 @@ router.post('/checkrelationship', async (req, res) => {
                 });
             }
         } else {
-            res.json({
-                status: "not",
-            });
+            if (relation1) {
+                if (relation.status === "pending") {
+                    res.json({
+                        status: "waiting",
+                    });
+                } else {
+                    res.json({
+                        status: "yet",
+                    });
+                }
+            } else {
+                res.json({
+                    status: "not",
+                });
+            }
+
         }
+
+
 
 
     } catch (err) {
