@@ -27,6 +27,7 @@ router.post('/specific', async (req, res) => {
                 return {
                     _id: item._id,
                     username: user.username,
+                    email: user.email,
                     urlavatar: user.urlavatar,
                     date: item.date,
                     cmtcontent: item.cmtcontent
