@@ -112,6 +112,55 @@ router.get('/:userEmail', async (req, res) => {
             }));
         }
 
+        // tính điểm profile 
+        const computePointProfile = () => {
+            let expPoint = 0;
+            let eduPoint = 0;
+            let positionPoint = 0;
+            let skillPoint = 0;
+
+            eduPoint = userschool.length * 5;
+
+            companies && companies.map(item => {
+                switch (item.position) {
+                    case "Project Manager":
+                        expPoint += 20;
+                        break;
+                    case "Tech-Leader":
+                        expPoint += 17;
+                        break;
+                    case "Team-Leader":
+                        expPoint += 15;
+                        break;
+                    case "Senior":
+                        expPoint += 13;
+                        break;
+                    case "Mid-Senior":
+                        expPoint += 11;
+                        break;
+                    case "Junior":
+                        expPoint += 9;
+                        break;
+                    case "Fresher":
+                        expPoint += 7;
+                        break;
+                    case "Intern":
+                        expPoint += 5;
+                        break;
+
+                    default:
+                        break;
+                }
+            });
+
+            skillPoint = userSkills.length * 3;
+
+            return expPoint + eduPoint + positionPoint + skillPoint;
+
+        }
+
+        const userpoint = computePointProfile();
+
 
         const newUser = {
             _id: oneUser._id,
@@ -125,6 +174,7 @@ router.get('/:userEmail', async (req, res) => {
             headline: oneUser.headline,
             underwork: oneUser.underwork,
             path: oneUser.path,
+            point: userpoint,
             schools: userschool,
             companies: companies,
             skills: userSkills,
