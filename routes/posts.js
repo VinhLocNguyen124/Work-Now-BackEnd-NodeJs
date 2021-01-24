@@ -16,6 +16,7 @@ router.get('/:emailcurrentuser', async (req, res) => {
         const posts = await Post.find().sort({ _id: -1 });
 
         let newListPost = [];
+        let newListFriendPost = [];
         if (posts.length > 0) {
             newListPost = await Promise.all(posts.map(async item => {
 
@@ -25,7 +26,7 @@ router.get('/:emailcurrentuser', async (req, res) => {
                 const request1 = await Request.findOne({ idusersend: user._id, iduserrecieve: idCurrentUser, status: "done" });
 
                 if (request || request1) {
-                    return {
+                    newListFriendPost.push({
                         _id: item._id,
                         emailuser: item.emailuser,
                         idpostshare: item.idpostshare,
@@ -41,13 +42,31 @@ router.get('/:emailcurrentuser', async (req, res) => {
                         headline: user.headline,
                         urlavatar: user.urlavatar,
                         liked: likepost ? true : false,
-                    }
+                    })
+                }
+
+                return {
+                    _id: item._id,
+                    emailuser: item.emailuser,
+                    idpostshare: item.idpostshare,
+                    content: item.content,
+                    imgurl: item.imgurl,
+                    pdfurl: item.pdfurl,
+                    seescope: item.seescope,
+                    allowcmt: item.allowcmt,
+                    formal: item.formal,
+                    active: item.active,
+                    date: item.date,
+                    username: user.username,
+                    headline: user.headline,
+                    urlavatar: user.urlavatar,
+                    liked: likepost ? true : false,
                 }
 
             }));
         }
 
-        res.json(newListPost);
+        res.json(newListFriendPost);
     } catch (err) {
         res.json({ message: err });
     }
