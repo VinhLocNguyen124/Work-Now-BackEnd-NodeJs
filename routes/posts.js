@@ -5,7 +5,7 @@ const User = require('../models/User');
 const LikePost = require('../models/LikePost');
 
 //Get  all posts
-router.get('/:emailcurrentuser', async (req, res) => {
+router.post('/:emailcurrentuser', async (req, res) => {
     try {
 
         const user = await User.findOne({ email: req.params.emailcurrentuser }).exec();
@@ -21,11 +21,11 @@ router.get('/:emailcurrentuser', async (req, res) => {
                 const user = await User.findOne({ email: item.emailuser }).exec();
                 const likeposts = await LikePost.find({ iduser: idCurrentUser });
 
-                Promise.all(likeposts.forEach(async likepost => {
+                likeposts.forEach(likepost => {
                     if (likepost.idpost === item._id) {
                         liked = true
                     }
-                }));
+                })
 
                 return {
                     _id: item._id,
