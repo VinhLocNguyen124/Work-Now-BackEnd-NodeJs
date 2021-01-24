@@ -27,11 +27,8 @@ router.post('/:emailcurrentuser', async (req, res) => {
                 //     }
                 // }));
 
-                for (const likepost of likeposts) {
-                    if (likepost.idpost === item._id) {
-                        liked = true;
-                        break;
-                    }
+                if (likeposts.some(e => e.idpost === item._id)) {
+                    liked = true;
                 }
 
                 return {
