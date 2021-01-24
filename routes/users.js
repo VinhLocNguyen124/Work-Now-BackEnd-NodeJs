@@ -7,6 +7,7 @@ const UserSkill = require('../models/UserSkill');
 const Company = require('../models/Company');
 const Position = require('../models/Position');
 const Skill = require('../models/Skill');
+const Request = require('../models/Request');
 
 //Get all users
 router.get('/', async (req, res) => {
@@ -62,6 +63,7 @@ router.get('/:userEmail', async (req, res) => {
         const userschool = await UserSchool.find({ iduser: oneUser._id }).exec();
         const usercompany = await UserCompany.find({ iduser: oneUser._id }).exec();
         const userskill = await UserSkill.find({ iduser: oneUser._id }).exec();
+        const requests = await Request.find({ iduserrecieve: oneUser._id, status: "pending" }).exec();
 
         let companies = [];
         if (usercompany.length > 0) {
@@ -94,6 +96,20 @@ router.get('/:userEmail', async (req, res) => {
             }));
         }
 
+        let newRequests = [];
+        if (requests.length > 0) {
+            newRequests = await Promise.all(requests.map(async item => {
+                // iduser, idcompany, idposition
+                const user = await User.findOne({ _id: item.idusersend }).exec();
+
+                return {
+                    _id: item._id,
+                    usernamesend: user.username,
+                    urlavatar: user.urlavatar,
+                }
+            }));
+        }
+
 
         const newUser = {
             _id: oneUser._id,
@@ -109,7 +125,8 @@ router.get('/:userEmail', async (req, res) => {
             path: oneUser.path,
             schools: userschool,
             companies: companies,
-            skills: userSkills
+            skills: userSkills,
+            requests: newRequests
         }
 
         res.json(newUser);
