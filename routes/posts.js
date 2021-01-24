@@ -34,8 +34,8 @@ router.get('/:emailcurrentuser', async (req, res) => {
 
         const posts = await Post.find().sort({ _id: -1 });
 
-        let newListPost = [postSkeleton];
-        let newListFriendPost = [postSkeleton];
+        let newListPost = [];
+        let newListFriendPost = [];
         if (posts.length > 0) {
             newListPost = await Promise.all(posts.map(async item => {
 
@@ -84,6 +84,10 @@ router.get('/:emailcurrentuser', async (req, res) => {
                 }
 
             }));
+        }
+
+        if (newListFriendPost.length === 0) {
+            newListFriendPost = newListPost;
         }
 
         res.json(newListFriendPost);
