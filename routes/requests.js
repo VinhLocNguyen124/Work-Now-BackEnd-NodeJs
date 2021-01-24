@@ -30,6 +30,25 @@ router.post('/', async (req, res) => {
 
 });
 
+//Delete request
+router.delete('/deleterequest/:idrequest', async (req, res) => {
+
+    try {
+
+        const deleterequest = await Request.deleteMany({ _id: req.params.idrequest })
+
+        res.json({
+            status: "success", response: {
+                deleterequest,
+            }
+        });
+    } catch (err) {
+        res.json({ message: err });
+    }
+
+});
+
+
 //Check relationship
 router.post('/checkrelationship', async (req, res) => {
 
