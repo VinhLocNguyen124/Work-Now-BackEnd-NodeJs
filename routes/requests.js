@@ -70,7 +70,7 @@ router.post('/checkrelationship', async (req, res) => {
             }
         } else {
             if (relation1) {
-                if (relation.status === "pending") {
+                if (relation1.status === "pending") {
                     res.json({
                         status: "waiting",
                     });
