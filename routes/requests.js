@@ -48,6 +48,23 @@ router.delete('/deleterequest/:idrequest', async (req, res) => {
 
 });
 
+//Accept request 
+router.put('/acceptrequest/:idrequest', async (req, res) => {
+    try {
+        const acceptRequest = await Request.updateOne(
+            { _id: req.params.idrequest },
+            { $set: { status: "done" } }
+        )
+        res.json({
+            status: "success", response: {
+                acceptRequest,
+            }
+        });
+    } catch (err) {
+        res.json({ message: err });
+    }
+})
+
 
 //Check relationship
 router.post('/checkrelationship', async (req, res) => {
