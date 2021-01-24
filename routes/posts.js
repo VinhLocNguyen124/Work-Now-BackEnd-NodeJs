@@ -5,7 +5,7 @@ const User = require('../models/User');
 const LikePost = require('../models/LikePost');
 
 //Get  all posts
-router.post('/:emailcurrentuser', async (req, res) => {
+router.get('/:emailcurrentuser', async (req, res) => {
     try {
 
         const user = await User.findOne({ email: req.params.emailcurrentuser }).exec();
