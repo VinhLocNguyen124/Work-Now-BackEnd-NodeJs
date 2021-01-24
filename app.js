@@ -14,6 +14,7 @@ const schoolsRoute = require('./routes/schools');
 const positionsRoute = require('./routes/position');
 const skillsRoute = require('./routes/skills');
 const requestsRoute = require('./routes/requests');
+const commentsRoute = require('./routes/comments');
 const indexRoute = require('./routes'); // --
 
 //Middleware
@@ -26,6 +27,7 @@ app.use('/positions', positionsRoute);
 app.use('/schools', schoolsRoute);
 app.use('/skills', skillsRoute);
 app.use('/requests', requestsRoute);
+app.use('/comments', commentsRoute);
 app.use('/', indexRoute);
 
 // step 3 -- heroku deployment
