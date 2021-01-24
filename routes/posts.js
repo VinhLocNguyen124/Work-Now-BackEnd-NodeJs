@@ -21,7 +21,6 @@ router.post('/:emailcurrentuser', async (req, res) => {
                 const user = await User.findOne({ email: item.emailuser }).exec();
                 const likepost = await LikePost.findOne({ idpost: item._id, iduser: idCurrentUser });
 
-
                 return {
                     _id: item._id,
                     emailuser: item.emailuser,
@@ -74,25 +73,27 @@ router.post('/', async (req, res) => {
 });
 
 //User like post
-router.post('/likepost', async (req, res) => {
+router.post('/likepost', (req, res) => {
 
     const likepost = new LikePost({
         idpost: req.body.idpost,
         iduser: req.body.iduser,
     });
 
-    try {
-
-        const savedLikePost = await likepost.save();
-
+    likepost.save().then(savedLikePost => {
         res.json({
             status: "success", response: {
                 savedLikePost,
             }
         });
-    } catch (err) {
-        res.json({ message: err });
-    }
+    }).catch(error => {
+        res.json({
+            status: "error", response: {
+                error
+            }
+        });
+    })
+
 })
 
 // //Specific post
