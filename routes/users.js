@@ -105,6 +105,7 @@ router.get('/:userEmail', async (req, res) => {
                 return {
                     _id: item._id,
                     usernamesend: user.username,
+                    idusersend: user._id,
                     urlavatar: user.urlavatar,
                     headline: user.headline
                 }
