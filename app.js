@@ -13,6 +13,7 @@ const companiesRoute = require('./routes/companies');
 const schoolsRoute = require('./routes/schools');
 const positionsRoute = require('./routes/position');
 const skillsRoute = require('./routes/skills');
+const requestsRoute = require('./routes/requests');
 const indexRoute = require('./routes'); // --
 
 //Middleware
@@ -24,6 +25,7 @@ app.use('/companies', companiesRoute);
 app.use('/positions', positionsRoute);
 app.use('/schools', schoolsRoute);
 app.use('/skills', skillsRoute);
+app.use('/requests', requestsRoute);
 app.use('/', indexRoute);
 
 // step 3 -- heroku deployment

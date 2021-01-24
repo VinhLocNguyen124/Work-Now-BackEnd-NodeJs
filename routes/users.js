@@ -106,6 +106,7 @@ router.get('/:userEmail', async (req, res) => {
                     _id: item._id,
                     usernamesend: user.username,
                     urlavatar: user.urlavatar,
+                    headline: user.headline
                 }
             }));
         }
