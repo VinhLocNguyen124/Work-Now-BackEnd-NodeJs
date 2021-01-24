@@ -4,6 +4,7 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 const LikePost = require('../models/LikePost');
 const Request = require('../models/Request');
+const Comment = require('../models/Comment');
 
 //Specific post
 router.post('/specific', async (req, res) => {
@@ -12,10 +13,26 @@ router.post('/specific', async (req, res) => {
         const userCurrent = await User.findOne({ email: req.body.emailcurrentuser }).exec();
         const idCurrentUser = userCurrent._id;
 
-
-
         const userPost = await User.findOne({ email: post.emailuser }).exec();
         const likepost = await LikePost.findOne({ idpost: post._id, iduser: idCurrentUser });
+
+        const comments = await Comment.find({ idpost: post._id });
+
+        let listComment = [];
+        if (comments.length > 0) {
+            listComment = await Promise.all(comments.map(async item => {
+
+                const user = await User.findOne({ _id: item.iduser }).exec();
+
+                return {
+                    _id: item._id,
+                    username: user.username,
+                    urlavatar: user.urlavatar,
+                    date: item.date,
+                    cmtcontent: item.cmtcontent
+                }
+            }));
+        }
 
         const newPost = {
             _id: post._id,
@@ -33,6 +50,7 @@ router.post('/specific', async (req, res) => {
             headline: userPost.headline,
             urlavatar: userPost.urlavatar,
             liked: likepost ? true : false,
+            comments: listComment
         }
 
 
