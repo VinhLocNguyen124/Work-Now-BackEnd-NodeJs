@@ -4,6 +4,8 @@ const User = require('../models/User');
 const Requirement = require('../models/Requirement');
 const Company = require('../models/Company');
 const RequirementSkill = require('../models/RequirementSkill');
+const Notification = require('../models/Notification');
+const User = require('../models/User');
 
 //Submit one  requirement
 router.post('/', async (req, res) => {
@@ -27,6 +29,8 @@ router.post('/', async (req, res) => {
             active: true,
         })
 
+        const req = await Requirement.findOne({ _id: requirement._id })
+
         const savedrequirement = await requirement.save();
 
         const listskill = req.body.listskill;
@@ -39,6 +43,90 @@ router.post('/', async (req, res) => {
 
             const savedReSkill = await reSkill.save();
         }));
+
+
+
+        let idpotentialuser = ""
+
+        let lastpointuser = 0;
+
+        //getalluser here
+        const allUser = await User.find({ underwork: true });
+        await Promise.all(allUser.map(async oneUser => {
+            const userschool = await UserSchool.find({ iduser: oneUser._id }).exec();
+            const usercompany = await UserCompany.find({ iduser: oneUser._id }).exec();
+            const userskill = await UserSkill.find({ iduser: oneUser._id }).exec();
+            const requests = await Request.find({ iduserrecieve: oneUser._id, status: "pending" }).exec();
+
+            let companies = [];
+            if (usercompany.length > 0) {
+                companies = await Promise.all(usercompany.map(async usercomp => {
+                    // iduser, idcompany, idposition
+                    const company = await Company.findOne({ _id: usercomp.idcompany }).exec();
+                    const position = await Position.findOne({ _id: usercomp.idposition }).exec();
+                    return {
+                        _id: usercomp._id,
+                        companyname: company.name,
+                        position: position.name,
+                        major: usercomp.major,
+                        expyear: usercomp.expyear
+                    }
+                }));
+            }
+
+            let userSkills = [];
+            if (userskill.length > 0) {
+                userSkills = await Promise.all(userskill.map(async item => {
+                    // iduser, idcompany, idposition
+                    const skill = await Skill.findOne({ _id: item.idskill }).exec();
+
+                    return {
+                        _id: item._id,
+                        name: skill.name,
+                        type: skill.type,
+                        important: item.bestskill
+                    }
+                }));
+            }
+
+            let pointuser = 0
+
+            listskill.map(itemRe => {
+                userSkills.map(itemUser => {
+                    if (itemRe.name === itemUser.name) {
+                        pointuser += 10
+                    }
+                })
+            });
+
+            if (oneUser.province === requirement.province) {
+                pointuser += 10;
+            }
+
+            if (oneUser.city === requirement.city) {
+                pointuser += 10;
+            }
+
+            if (pointuser > lastpointuser) {
+                lastpointuser = pointuser;
+                idpotentialuser = oneUser._id
+            }
+
+
+        }));
+
+        if (idpotentialuser !== "") {
+            const notifi = new Notification({
+                type: "candidate",
+                iduserrecieve: req.body.iduser,
+                idpost: "",
+                idmatcheduser: idpotentialuser,
+                content: "Đã tìm thấy ứng viên phù hợp",
+                read: false,
+            });
+
+            const savedNoti = await notifi.save();
+        }
 
         //trả về khi save thành công
         res.json({
