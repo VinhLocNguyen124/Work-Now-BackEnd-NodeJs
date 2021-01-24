@@ -66,7 +66,7 @@ router.get('/:emailcurrentuser', async (req, res) => {
             }));
         }
 
-        res.json(newListPost);
+        res.json(newListFriendPost);
     } catch (err) {
         res.json({ message: err });
     }
