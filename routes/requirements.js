@@ -5,7 +5,6 @@ const Requirement = require('../models/Requirement');
 const Company = require('../models/Company');
 const RequirementSkill = require('../models/RequirementSkill');
 const Notification = require('../models/Notification');
-const User = require('../models/User');
 
 //Submit one  requirement
 router.post('/', async (req, res) => {
@@ -125,8 +124,10 @@ router.post('/', async (req, res) => {
                 read: false,
             });
 
-            const savedNoti = await notifi.save();
+            const savedNoti = await notifi.save()
         }
+
+
 
         //trả về khi save thành công
         res.json({
