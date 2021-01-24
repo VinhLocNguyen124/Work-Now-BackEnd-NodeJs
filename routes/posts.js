@@ -32,7 +32,7 @@ router.post('/specific', async (req, res) => {
         //     liked: likepost ? true : false,
         // }
 
-        const newpost = { name: "Hhihi" }
+        const newpost = { name: req.body.idpost }
         res.json(newpost);
     } catch (err) {
         res.json({ message: err });
