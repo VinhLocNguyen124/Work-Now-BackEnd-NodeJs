@@ -62,7 +62,7 @@ router.post('/specific', async (req, res) => {
 
 });
 
-//Get  all posts
+//Get  all posts for specific newfeed
 router.get('/:emailcurrentuser', async (req, res) => {
 
     const postSkeleton = {
@@ -87,7 +87,6 @@ router.get('/:emailcurrentuser', async (req, res) => {
 
         const user = await User.findOne({ email: req.params.emailcurrentuser }).exec();
         const idCurrentUser = user._id;
-
         const posts = await Post.find({ seescope: "anyone" }).sort({ _id: -1 });
 
         let newListPost = [];
@@ -151,6 +150,96 @@ router.get('/:emailcurrentuser', async (req, res) => {
         res.json({ message: err });
     }
 });
+
+//get all post of timeline
+router.get('/timeline/:emailcurrentuser', async (req, res) => {
+
+    const postSkeleton = {
+        _id: "a0",
+        emailuser: "",
+        idpostshare: "",
+        content: "",
+        imgurl: "",
+        pdfurl: "",
+        seescope: "anyone",
+        allowcmt: true,
+        formal: true,
+        active: true,
+        date: "01/01/1900",
+        username: "",
+        headline: "",
+        urlavatar: "",
+        liked: false,
+    }
+
+    try {
+
+        const user = await User.findOne({ email: req.params.emailcurrentuser }).exec();
+        const idCurrentUser = user._id;
+        const posts = await Post.find({ seescope: "anyone" }).sort({ _id: -1 });
+
+        let newListPost = [];
+        let newListFriendPost = [];
+        if (posts.length > 0) {
+            newListPost = await Promise.all(posts.map(async item => {
+
+                const user = await User.findOne({ email: item.emailuser }).exec();
+                const likepost = await LikePost.findOne({ idpost: item._id, iduser: idCurrentUser });
+                const request = await Request.findOne({ idusersend: idCurrentUser, iduserrecieve: user._id, status: "done" });
+                const request1 = await Request.findOne({ idusersend: user._id, iduserrecieve: idCurrentUser, status: "done" });
+
+                //Kiểm tra posts nào của connector thì mới push, chỉ lấy của bạn
+                if (request || request1) {
+                    newListFriendPost.push({
+                        _id: item._id,
+                        emailuser: item.emailuser,
+                        idpostshare: item.idpostshare,
+                        content: item.content,
+                        imgurl: item.imgurl,
+                        pdfurl: item.pdfurl,
+                        seescope: item.seescope,
+                        allowcmt: item.allowcmt,
+                        formal: item.formal,
+                        active: item.active,
+                        date: item.date,
+                        username: user.username,
+                        headline: user.headline,
+                        urlavatar: user.urlavatar,
+                        liked: likepost ? true : false,
+                    })
+                }
+
+                return {
+                    _id: item._id,
+                    emailuser: item.emailuser,
+                    idpostshare: item.idpostshare,
+                    content: item.content,
+                    imgurl: item.imgurl,
+                    pdfurl: item.pdfurl,
+                    seescope: item.seescope,
+                    allowcmt: item.allowcmt,
+                    formal: item.formal,
+                    active: item.active,
+                    date: item.date,
+                    username: user.username,
+                    headline: user.headline,
+                    urlavatar: user.urlavatar,
+                    liked: likepost ? true : false,
+                }
+
+            }));
+        }
+
+        if (newListFriendPost.length < 50) {
+            newListFriendPost = newListPost;
+        }
+
+        res.json(newListFriendPost);
+    } catch (err) {
+        res.json({ message: err });
+    }
+});
+
 
 //Submit a post
 router.post('/', async (req, res) => {

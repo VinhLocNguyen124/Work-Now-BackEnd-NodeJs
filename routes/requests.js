@@ -104,13 +104,53 @@ router.post('/checkrelationship', async (req, res) => {
 
         }
 
-
-
-
     } catch (err) {
         res.json({ message: err });
     }
 
 });
+
+//List friend request
+router.put('/friends/:idcurrentuser', async (req, res) => {
+    try {
+        const requests = await Request.find({ seescope: "anyone" }).sort({ _id: -1 });
+
+        let listFriend = [];
+        if (requests.length > 0) {
+            listFriend = await Promise.all(requests.map(async item => {
+
+                if (item.idusersend === idcurrentuser) {
+                    const user = await User.findOne({ _id: item.idusersend }).exec();
+
+                    listFriend.push({
+                        _id: item._id,
+                        iduser: item.idusersend,
+                        username: user.username,
+                        emailuser: user.emailuser,
+                        urlavatar: user.urlavatar,
+                        headline: user.headline,
+                    });
+
+                } else if (item.iduserrecieve === idcurrentuser) {
+                    const user = await User.findOne({ _id: item.iduserrecieve }).exec();
+
+                    listFriend.push({
+                        _id: item._id,
+                        iduser: item.iduserrecieve,
+                        username: user.username,
+                        emailuser: user.emailuser,
+                        urlavatar: user.urlavatar,
+                        headline: user.headline,
+                    });
+                }
+
+            }));
+        }
+
+        res.json(listFriend);
+    } catch (err) {
+        res.json({ message: err });
+    }
+})
 
 module.exports = router;
