@@ -126,7 +126,7 @@ router.get('/friends/:idcurrentuser', async (req, res) => {
                         _id: item._id,
                         iduser: item.idusersend,
                         username: user.username,
-                        emailuser: user.emailuser,
+                        email: user.email,
                         urlavatar: user.urlavatar,
                         headline: user.headline,
                     });
@@ -138,7 +138,7 @@ router.get('/friends/:idcurrentuser', async (req, res) => {
                         _id: item._id,
                         iduser: item.iduserrecieve,
                         username: user.username,
-                        emailuser: user.emailuser,
+                        email: user.email,
                         urlavatar: user.urlavatar,
                         headline: user.headline,
                     });
