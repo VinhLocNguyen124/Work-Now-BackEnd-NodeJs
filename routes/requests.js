@@ -113,7 +113,7 @@ router.post('/checkrelationship', async (req, res) => {
 //List friend request
 router.get('/friends/:idcurrentuser', async (req, res) => {
     try {
-        const requests = await Request.find({ seescope: "anyone" }).sort({ _id: -1 });
+        const requests = await Request.find({ status: "done" }).sort({ _id: -1 });
 
         let listFriend = [];
         if (requests.length > 0) {
