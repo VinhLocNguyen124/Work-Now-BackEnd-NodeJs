@@ -111,7 +111,7 @@ router.post('/checkrelationship', async (req, res) => {
 });
 
 //List friend request
-router.put('/friends/:idcurrentuser', async (req, res) => {
+router.get('/friends/:idcurrentuser', async (req, res) => {
     try {
         const requests = await Request.find({ seescope: "anyone" }).sort({ _id: -1 });
 
