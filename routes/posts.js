@@ -57,7 +57,7 @@ router.post('/specific', async (req, res) => {
 
         res.json(newPost);
     } catch (err) {
-        res.json({ message: err });
+        res.json({ message: err.message });
     }
 
 });
@@ -147,7 +147,7 @@ router.get('/:emailcurrentuser', async (req, res) => {
 
         res.json(newListFriendPost);
     } catch (err) {
-        res.json({ message: err });
+        res.json({ message: err.message });
     }
 });
 
@@ -236,7 +236,7 @@ router.get('/timeline/:emailcurrentuser', async (req, res) => {
 
         res.json(newListFriendPost);
     } catch (err) {
-        res.json({ message: err });
+        res.json({ message: err.message });
     }
 });
 
@@ -262,7 +262,7 @@ router.post('/', async (req, res) => {
         //trả về khi save thành công
         res.json({ status: "success", response: savedPost });
     } catch (err) {
-        res.json({ message: err });
+        res.json({ message: err.message });
     }
 
 });
@@ -305,7 +305,7 @@ router.post('/dislikepost', async (req, res) => {
             }
         });
     } catch (error) {
-        res.json({ message: err });
+        res.json({ message: err.message });
     }
 })
 
@@ -318,7 +318,7 @@ router.post('/dislikepost', async (req, res) => {
 //         const removePost = await Post.remove({ _id: req.params.postId })
 //         res.json(removePost);
 //     } catch (err) {
-//         res.json({ message: err });
+//         res.json({ message: err.message });
 //     }
 // });
 
@@ -331,7 +331,7 @@ router.post('/dislikepost', async (req, res) => {
 //         )
 //         res.json(updatePost);
 //     } catch (err) {
-//         res.json({ message: err });
+//         res.json({ message: err.message });
 //     }
 // })
 

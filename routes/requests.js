@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
         });
 
     } catch (err) {
-        res.json({ message: err });
+        res.json({ message: err.message });
     }
 
 });
@@ -43,7 +43,7 @@ router.delete('/deleterequest/:idrequest', async (req, res) => {
             }
         });
     } catch (err) {
-        res.json({ message: err });
+        res.json({ message: err.message });
     }
 
 });
@@ -61,7 +61,7 @@ router.put('/acceptrequest/:idrequest', async (req, res) => {
             }
         });
     } catch (err) {
-        res.json({ message: err });
+        res.json({ message: err.message });
     }
 })
 
@@ -105,7 +105,7 @@ router.post('/checkrelationship', async (req, res) => {
         }
 
     } catch (err) {
-        res.json({ message: err });
+        res.json({ message: err.message });
     }
 
 });
@@ -119,7 +119,7 @@ router.get('/friends/:idcurrentuser', async (req, res) => {
         if (requests.length > 0) {
             listFriend = await Promise.all(requests.map(async item => {
 
-                if (item.idusersend === idcurrentuser) {
+                if (item.idusersend === req.params.idcurrentuser) {
                     const user = await User.findOne({ _id: item.idusersend }).exec();
 
                     listFriend.push({
@@ -131,7 +131,7 @@ router.get('/friends/:idcurrentuser', async (req, res) => {
                         headline: user.headline,
                     });
 
-                } else if (item.iduserrecieve === idcurrentuser) {
+                } else if (item.iduserrecieve === req.params.idcurrentuser) {
                     const user = await User.findOne({ _id: item.iduserrecieve }).exec();
 
                     listFriend.push({
