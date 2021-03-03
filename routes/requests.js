@@ -122,7 +122,7 @@ router.get('/friends/:idcurrentuser', async (req, res) => {
                 if (item.idusersend === req.params.idcurrentuser) {
                     const user = await User.findOne({ _id: item.idusersend }).exec();
 
-                    listFriend.push({
+                    return ({
                         _id: item._id,
                         iduser: item.idusersend,
                         username: user.username,
@@ -134,7 +134,7 @@ router.get('/friends/:idcurrentuser', async (req, res) => {
                 } else if (item.iduserrecieve === req.params.idcurrentuser) {
                     const user = await User.findOne({ _id: item.iduserrecieve }).exec();
 
-                    listFriend.push({
+                    return ({
                         _id: item._id,
                         iduser: item.iduserrecieve,
                         username: user.username,
