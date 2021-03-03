@@ -117,7 +117,7 @@ router.get('/friends/:idcurrentuser', async (req, res) => {
 
         let listFriend = [];
         if (requests.length > 0) {
-            Promise.all(requests.map(async item => {
+            const list = await Promise.all(requests.map(async item => {
 
                 if (item.idusersend === req.params.idcurrentuser) {
                     const user = await User.findOne({ _id: item.idusersend }).exec();
