@@ -123,7 +123,7 @@ router.get('/friends/:idcurrentuser', async (req, res) => {
                     const user = await User.findOne({ _id: item.iduserrecieve }).exec();
 
                     listFriend.push({
-                        _id: item._id,
+                        idconnect: item._id,
                         iduser: item.idusersend,
                         username: user.username,
                         email: user.email,
@@ -135,7 +135,7 @@ router.get('/friends/:idcurrentuser', async (req, res) => {
                     const user = await User.findOne({ _id: item.idusersend }).exec();
 
                     listFriend.push({
-                        _id: item._id,
+                        idconnect: item._id,
                         iduser: item.iduserrecieve,
                         username: user.username,
                         email: user.email,
