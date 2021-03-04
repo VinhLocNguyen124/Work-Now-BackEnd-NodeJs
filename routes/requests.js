@@ -151,6 +151,24 @@ router.get('/friends/:idcurrentuser', async (req, res) => {
     } catch (err) {
         res.json({ message: err.message });
     }
-})
+});
+
+//Remove connection (delete request with status = done) 
+router.delete('/disconnect/:idconnect', async (req, res) => {
+
+    try {
+
+        const disconnect = await Request.deleteOne({ _id: req.params.idconnect })
+
+        res.json({
+            status: "success", response: {
+                disconnect,
+            }
+        });
+    } catch (err) {
+        res.json({ message: err.message });
+    }
+
+});
 
 module.exports = router;
