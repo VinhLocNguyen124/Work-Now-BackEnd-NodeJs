@@ -55,6 +55,25 @@ router.post('/', async (req, res) => {
 
 });
 
+//Get specific user info by id
+router.get('/userinfo/:iduser', async (req, res) => {
+    try {
+        const user = await User.findOne({ _id: req.params.iduser }).exec();
+
+        res.json({
+            _id: user._id,
+            urlavatar: user.urlavatar,
+            username: user.username,
+            headline: user.headline,
+            email: user.email,
+        })
+
+    } catch (error) {
+        res.json({ message: err.message });
+    }
+
+});
+
 //Specific user
 router.get('/:userEmail', async (req, res) => {
 
