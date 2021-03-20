@@ -17,6 +17,7 @@ const requestsRoute = require('./routes/requests');
 const commentsRoute = require('./routes/comments');
 const requirementsRoute = require('./routes/requirements');
 const notificationsRoute = require('./routes/notifications');
+const testRoute = require('./routes/test');
 
 const indexRoute = require('./routes'); // --
 
@@ -33,6 +34,7 @@ app.use('/requests', requestsRoute);
 app.use('/comments', commentsRoute);
 app.use('/requirements', requirementsRoute);
 app.use('/notifications', notificationsRoute);
+app.use('/test', testRoute);
 app.use('/', indexRoute);
 
 // step 3 -- heroku deployment
