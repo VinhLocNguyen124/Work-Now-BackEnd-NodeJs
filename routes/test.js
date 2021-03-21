@@ -22,11 +22,9 @@ router.post('/:deviceToken', async (req, res) => {
                     greeting: "Hello guys"
                 },
                 notification: {
-                    android: {
-                        imageUrl: "https://cdn4.iconfinder.com/data/icons/logos-3/600/React.js_logo-512.png"
-                    },
                     body: "Notification send from node server !!",
-                    title: "Test server noti"
+                    title: "Test server noti",
+                    imageUrl: "https://www.mathieufontaine.dev/img/logos/react-js.png"
                 },
             },
             {
