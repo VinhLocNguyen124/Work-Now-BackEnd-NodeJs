@@ -21,6 +21,11 @@ router.post('/:deviceToken', async (req, res) => {
                 data: {
                     greeting: "Hello guys"
                 },
+                notification: {
+                    android: {},
+                    body: "Notification send from node server !!",
+                    title: "Test server noti"
+                },
             },
             {
                 // Required for background/quit data-only messages on iOS
