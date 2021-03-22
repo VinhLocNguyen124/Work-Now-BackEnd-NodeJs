@@ -31,7 +31,7 @@ router.post('/saveusertoken', async (req, res) => {
             });
 
             if (!check) {
-                await db.ref('/users/' + iduser).set({
+                db.ref('/users/' + iduser).set({
                     iduser: iduser,
                     email: email,
                     token: token
