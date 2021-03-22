@@ -39,6 +39,15 @@ app.use('/test', testRoute);
 app.use('/firebase', firebaseRoute);
 app.use('/', indexRoute);
 
+const admin = require("firebase-admin");
+const serviceAccount = require("./../ServiceAccountKey.json");
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://work-now-3a6c0-default-rtdb.firebaseio.com"
+})
+
+
 // step 3 -- heroku deployment
 if (process.env.NODE_ENV === 'production') {
 

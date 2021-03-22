@@ -2,12 +2,6 @@ const express = require('express');
 const { database } = require('firebase-admin');
 const router = express.Router();
 const admin = require("firebase-admin");
-const serviceAccount = require("./../ServiceAccountKey.json");
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://work-now-3a6c0-default-rtdb.firebaseio.com"
-})
 
 //Test noti send from server
 router.post('/saveusertoken', async (req, res) => {

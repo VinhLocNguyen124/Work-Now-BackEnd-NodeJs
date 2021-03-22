@@ -6,12 +6,6 @@ const Company = require('../models/Company');
 const RequirementSkill = require('../models/RequirementSkill');
 const Notification = require('../models/Notification');
 const admin = require("firebase-admin");
-const serviceAccount = require("./../ServiceAccountKey.json");
-
-admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: "https://work-now-3a6c0-default-rtdb.firebaseio.com"
-});
 
 //Test noti send from server
 router.post('/:deviceToken', async (req, res) => {
