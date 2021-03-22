@@ -18,6 +18,7 @@ const commentsRoute = require('./routes/comments');
 const requirementsRoute = require('./routes/requirements');
 const notificationsRoute = require('./routes/notifications');
 const testRoute = require('./routes/test');
+const firebaseRoute = require('./routes/firebase');
 
 const indexRoute = require('./routes'); // --
 
@@ -35,6 +36,7 @@ app.use('/comments', commentsRoute);
 app.use('/requirements', requirementsRoute);
 app.use('/notifications', notificationsRoute);
 app.use('/test', testRoute);
+app.use('/firebase', firebaseRoute);
 app.use('/', indexRoute);
 
 // step 3 -- heroku deployment
