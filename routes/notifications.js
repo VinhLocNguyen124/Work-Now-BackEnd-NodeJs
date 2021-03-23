@@ -47,8 +47,8 @@ router.post('/message', async (req, res) => {
     const urlavatar = req.body.urlavatar;
     const roomkey = req.body.roomkey;
     const messageContent = req.body.messageContent;
-    const lastMessage = req.body.lastMessage;
-    const sendingPeriod = (Date.now() - lastMessage.time) / 1000 / 60 / 60;
+    const lastMessageSendingTime = req.body.lastMessageSendingTime;
+    const sendingPeriod = (Date.now() - Number(lastMessageSendingTime)) / 1000 / 60 / 60;
 
 
     try {
