@@ -57,7 +57,7 @@ router.post('/message', async (req, res) => {
         if (sendingPeriod > 1) {
             sendNotification(guessToken, username, messageContent, urlavatar)
             res.json({
-                status: "success",
+                status: lastMessageSendingTime,
                 time: lastMessageSendingTime
             });
         }
