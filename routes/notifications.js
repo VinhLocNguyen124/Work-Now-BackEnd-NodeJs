@@ -6,8 +6,8 @@ const Company = require('../models/Company');
 const RequirementSkill = require('../models/RequirementSkill');
 const Notification = require('../models/Notification');
 const admin = require("firebase-admin");
-// const sendNotification = require("../helpers/notification");
-// const findGuessToken = require("../helpers/findGuessToken");
+const sendNotification = require("../helpers/notification");
+const findGuessToken = require("../helpers/findGuessToken");
 
 //Test noti send from server
 router.post('/:deviceToken', async (req, res) => {
