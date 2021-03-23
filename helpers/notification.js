@@ -1,11 +1,10 @@
 const admin = require("firebase-admin");
 
-module.exports.sendNotification = async (tokens, title, body, imgurl, data = {},) => {
+module.exports.sendNotification = async (tokens, title, body, imgurl) => {
     await admin.messaging().sendToDevice(
         tokens,
         {
             data: {
-                data: data,
                 imageUrl: imgurl,
             },
             notification: {
