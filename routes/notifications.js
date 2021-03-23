@@ -64,7 +64,7 @@ router.post('/message', async (req, res) => {
 
         res.json({
             status: "success",
-            time: lastMessageSendingTime
+            time: sendingPeriod
         });
     } catch (err) {
         res.json({ message: err });
