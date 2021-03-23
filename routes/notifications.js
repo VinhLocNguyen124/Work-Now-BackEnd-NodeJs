@@ -63,7 +63,7 @@ router.post('/message', async (req, res) => {
         }
 
         res.json({
-            status: "success",
+            status: "faild",
             time: "hehe"
         });
     } catch (err) {
