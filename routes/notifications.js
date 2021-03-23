@@ -53,11 +53,11 @@ router.post('/message', async (req, res) => {
 
     try {
 
-        const guessToken = await findGuessToken(roomkey, iduser);
-        if (sendingPeriod > 1) {
-            console.log("When send noti", sendingPeriod);
-            sendNotification(guessToken, username, messageContent, urlavatar);
-        }
+        // const guessToken = await findGuessToken(roomkey, iduser);
+        // if (sendingPeriod > 1) {
+        //     console.log("When send noti", sendingPeriod);
+        sendNotification("cANlQ1pWT2KFvRDlugmtGe:APA91bFr3VYSLQRYSMzMGW52609-W6B6kTFbf38s_MfCQjltC_aqYQjzNaTjkilBxpRSFVWUkKfi4Pc4QFKjkWWstTk8ELNxl-UUnxTWhlIKn95eeUwQovxp13cq4XPKemPm3R4Lxa7n", username, messageContent, urlavatar);
+        // }
 
         console.log("When not send noti", sendingPeriod);
         res.status(200).send({
