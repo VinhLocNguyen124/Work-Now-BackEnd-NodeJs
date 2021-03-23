@@ -7,13 +7,13 @@ const RequirementSkill = require('../models/RequirementSkill');
 const Notification = require('../models/Notification');
 const admin = require("firebase-admin");
 
+import { sendNotification } from '../helpers/notification';
+import { findGuessToken } from '../helpers/findGuessToken';
+
 //Test noti send from server
 router.post('/:deviceToken', async (req, res) => {
-
     const deviceToken = req.params.deviceToken;
-
     try {
-
         await admin.messaging().sendToDevice(
             deviceToken, // ['token_1', 'token_2', ...]
             {
@@ -32,7 +32,32 @@ router.post('/:deviceToken', async (req, res) => {
                 priority: 'high',
             },
         );
+        res.json({
+            status: "success",
+        });
+    } catch (err) {
+        res.json({ message: err });
+    }
+});
 
+//Send notification when have a new message
+router.post('/message', async (req, res) => {
+
+    const iduser = req.body.iduser;
+    const username = req.body.username;
+    const urlavatar = req.body.urlavatar;
+    const roomkey = req.body.roomkey;
+    const messageContent = req.body.messageContent;
+    const lastMessage = req.body.lastMessage;
+    const sendingPeriod = (Date.now() - lastMessage.time) / 1000 / 60 / 60;
+
+
+    try {
+
+        const guessToken = await findGuessToken(roomkey, iduser);
+        if (sendingPeriod > 1) {
+            sendNotification(guessToken, username, messageContent, urlavatar)
+        }
 
         res.json({
             status: "success",
@@ -43,75 +68,5 @@ router.post('/:deviceToken', async (req, res) => {
 
 });
 
-// //Submit one  requirement
-// router.get('/:iduser', async (req, res) => {
-
-//     try {
-//         const notis = await Notification.find({ iduserrecieve: req.params.iduser });
-
-
-//         //trả về khi save thành công
-//         res.json(notis);
-//     } catch (err) {
-//         res.json({ message: err });
-//     }
-
-// });
-
-// //Get all skill
-// router.get('/', async (req, res) => {
-//     try {
-
-//         const skills = await Skill.find();
-
-//         res.json(skills);
-
-//     } catch (err) {
-//         res.json({ message: err });
-//     }
-// });
-
-// //Update user edu
-// router.put('/updateskill/:userskillid', async (req, res) => {
-
-//     try {
-
-//         const updateUserSkill = await UserSkill.updateOne(
-//             { _id: req.params.userskillid },
-//             {
-//                 $set: {
-//                     bestskill: req.body.bestskill
-
-//                 }
-//             }
-//         )
-//         res.json({
-//             status: "success", response: {
-//                 updateUserSkill,
-//             }
-//         });
-//     } catch (err) {
-//         res.json({ message: err });
-//     }
-
-// });
-
-// //Delete user skill
-// router.delete('/deleteskill/:userskillid', async (req, res) => {
-
-//     try {
-
-//         const deleteUserSkill = await UserSkill.deleteOne({ _id: req.params.userskillid })
-
-//         res.json({
-//             status: "success", response: {
-//                 deleteUserSkill,
-//             }
-//         });
-//     } catch (err) {
-//         res.json({ message: err });
-//     }
-
-// });
 
 module.exports = router;
