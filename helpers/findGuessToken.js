@@ -1,6 +1,6 @@
 const admin = require("firebase-admin");
 
-module.exports.findGuessToken = async (roomKey, ownerID) => {
+const findGuessToken = (roomKey, ownerID) => {
     const arr = roomKey.split("_");
     const guessID = ownerID === arr[0] ? arr[1] : arr[0];
     let guessToken;
@@ -23,3 +23,5 @@ module.exports.findGuessToken = async (roomKey, ownerID) => {
         console.log(e);
     }
 }
+
+exports.findGuessToken = findGuessToken;

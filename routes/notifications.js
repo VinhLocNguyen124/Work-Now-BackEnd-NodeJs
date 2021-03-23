@@ -6,7 +6,7 @@ const Company = require('../models/Company');
 const RequirementSkill = require('../models/RequirementSkill');
 const Notification = require('../models/Notification');
 const admin = require("firebase-admin");
-const sendNotification = require("../helpers/notification");
+const noti = require("../helpers/notification");
 const findGuessToken = require("../helpers/findGuessToken");
 
 //Test noti send from server
@@ -53,9 +53,9 @@ router.post('/message/:iduser', async (req, res) => {
 
     try {
 
-        const guessToken = await findGuessToken(roomkey, iduser);
+        const guessToken = findGuessToken.findGuessToken(roomkey, iduser);
         if (sendingPeriod > 1) {
-            await sendNotification(guessToken, username, messageContent, urlavatar);
+            noti.sendNotification(guessToken, username, messageContent, urlavatar);
         }
 
         res.json({
