@@ -40,15 +40,15 @@ router.post('/:deviceToken', async (req, res) => {
 });
 
 //Send notification when have a new message
-router.post('/message', async (req, res) => {
+router.post('/message/:iduser', async (req, res) => {
 
-    // const iduser = req.body.iduser;
-    // const username = req.body.username;
-    // const urlavatar = req.body.urlavatar;
-    // const roomkey = req.body.roomkey;
-    // const messageContent = req.body.messageContent;
-    // const lastMessageSendingTime = req.body.lastMessageSendingTime;
-    // const sendingPeriod = (Date.now() - Number(lastMessageSendingTime)) / 1000 / 60 / 60;
+    const iduser = req.body.iduser;
+    const username = req.body.username;
+    const urlavatar = req.body.urlavatar;
+    const roomkey = req.body.roomkey;
+    const messageContent = req.body.messageContent;
+    const lastMessageSendingTime = req.body.lastMessageSendingTime;
+    const sendingPeriod = (Date.now() - Number(lastMessageSendingTime)) / 1000 / 60 / 60;
     const token = "cANlQ1pWT2KFvRDlugmtGe:APA91bFr3VYSLQRYSMzMGW52609-W6B6kTFbf38s_MfCQjltC_aqYQjzNaTjkilBxpRSFVWUkKfi4Pc4QFKjkWWstTk8ELNxl-UUnxTWhlIKn95eeUwQovxp13cq4XPKemPm3R4Lxa7n";
 
     try {
@@ -63,11 +63,11 @@ router.post('/message', async (req, res) => {
             token,
             {
                 data: {
-                    imageUrl: "https://www.mathieufontaine.dev/img/logos/react-js.png",
+                    imageUrl: urlavatar,
                 },
                 notification: {
-                    body: "Notification send from node server !!",
-                    title: "Test server noti",
+                    body: messageContent,
+                    title: username,
                 },
             },
             {
