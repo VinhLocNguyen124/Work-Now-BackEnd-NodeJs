@@ -55,13 +55,13 @@ router.post('/message', async (req, res) => {
 
         const guessToken = await findGuessToken(roomkey, iduser);
         if (sendingPeriod > 1) {
-            sendNotification(guessToken, username, messageContent, urlavatar)
-
+            console.log(sendingPeriod);
+            sendNotification(guessToken, username, messageContent, urlavatar);
         }
 
-        res.status(200).json({
+        console.log(sendingPeriod);
+        res.status(200).send({
             status: "success",
-            response: lastMessageSendingTime
         });
     } catch (err) {
         res.json({ message: err });
