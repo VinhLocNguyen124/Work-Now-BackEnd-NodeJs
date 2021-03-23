@@ -56,6 +56,10 @@ router.post('/message', async (req, res) => {
         const guessToken = await findGuessToken(roomkey, iduser);
         if (sendingPeriod > 1) {
             sendNotification(guessToken, username, messageContent, urlavatar)
+            res.json({
+                status: "success",
+                time: sendingPeriod
+            });
         }
 
         res.json({
