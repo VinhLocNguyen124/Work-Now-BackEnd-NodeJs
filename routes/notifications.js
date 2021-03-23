@@ -58,12 +58,13 @@ router.post('/message', async (req, res) => {
             sendNotification(guessToken, username, messageContent, urlavatar)
             res.json({
                 status: "success",
-                time: lastMessage.time
+                time: lastMessageSendingTime
             });
         }
 
         res.json({
             status: "success",
+            time: lastMessageSendingTime
         });
     } catch (err) {
         res.json({ message: err });
