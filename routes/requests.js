@@ -171,4 +171,56 @@ router.delete('/disconnect/:idconnect', async (req, res) => {
 
 });
 
+//submit a request
+router.post('/search/friends', async (req, res) => {
+
+    const textSearch = req.body.textSearch;
+    const idcurrentuser = req.body.idcurrentuser;
+
+    try {
+        const requests = await Request.find({ status: "done" }).exec();
+
+        let listFriend = [];
+        if (requests.length > 0) {
+            const list = await Promise.all(requests.map(async item => {
+
+                if (item.idusersend === idcurrentuser) {
+                    const user = await User.findOne({ _id: item.iduserrecieve }).exec();
+
+                    listFriend.push({
+                        idconnect: item._id,
+                        iduser: item.iduserrecieve,
+                        username: user.username,
+                        email: user.email,
+                        urlavatar: user.urlavatar,
+                        headline: user.headline,
+                    });
+
+                } else if (item.iduserrecieve === idcurrentuser) {
+                    const user = await User.findOne({ _id: item.idusersend }).exec();
+
+                    listFriend.push({
+                        idconnect: item._id,
+                        iduser: item.idusersend,
+                        username: user.username,
+                        email: user.email,
+                        urlavatar: user.urlavatar,
+                        headline: user.headline,
+                    });
+                }
+
+            }));
+
+            listFriend = listFriend.filter((friend) => {
+                return friend.username.toLowerCase().trim().search(textSearch.toLowerCase().trim()) !== -1;
+            });
+        }
+
+        res.json(listFriend);
+    } catch (err) {
+        res.json({ message: err.message });
+    }
+
+});
+
 module.exports = router;
