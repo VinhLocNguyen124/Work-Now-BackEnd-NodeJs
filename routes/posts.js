@@ -276,26 +276,30 @@ router.post('/', async (req, res) => {
 });
 
 //User like post
-router.post('/likepost', (req, res) => {
+router.post('/likepost', async (req, res) => {
 
     const likepost = new LikePost({
         idpost: req.body.idpost,
         iduser: req.body.iduser,
     });
 
-    likepost.save().then(savedLikePost => {
+    try {
+
+        const savedLikePost = await likepost.save();
+        const db = admin.database();
+        await db.ref('/posts/' + req.body.idpost).set({
+            update: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+        });
+
         res.json({
             status: "success", response: {
                 savedLikePost,
             }
         });
-    }).catch(error => {
-        res.json({
-            status: "error", response: {
-                error
-            }
-        });
-    })
+    } catch (err) {
+        res.json({ message: err.message });
+    }
+
 })
 
 //User dislike post
@@ -305,6 +309,10 @@ router.post('/dislikepost', async (req, res) => {
         const deleteLikePost = await LikePost.deleteMany({
             idpost: req.body.idpost,
             iduser: req.body.iduser
+        });
+        const db = admin.database();
+        await db.ref('/posts/' + req.body.idpost).set({
+            update: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
         });
 
         res.json({
