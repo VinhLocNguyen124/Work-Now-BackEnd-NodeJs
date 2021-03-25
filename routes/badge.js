@@ -51,7 +51,7 @@ router.post('/message/:email', async (req, res) => {
 
 
             res.json({
-                // badge: badge,
+                badge: badge,
             });
         })
 
