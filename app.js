@@ -19,6 +19,7 @@ const requirementsRoute = require('./routes/requirements');
 const notificationsRoute = require('./routes/notifications');
 const testRoute = require('./routes/test');
 const firebaseRoute = require('./routes/firebase');
+const badgeRoute = require('./routes/badge');
 
 const indexRoute = require('./routes'); // --
 
@@ -37,6 +38,7 @@ app.use('/requirements', requirementsRoute);
 app.use('/notifications', notificationsRoute);
 app.use('/test', testRoute);
 app.use('/firebase', firebaseRoute);
+app.use('/badge', badgeRoute);
 app.use('/', indexRoute);
 
 const admin = require("firebase-admin");
@@ -52,7 +54,6 @@ admin.initializeApp({
 if (process.env.NODE_ENV === 'production') {
 
 }
-
 
 
 //TODO: Connect to db here
