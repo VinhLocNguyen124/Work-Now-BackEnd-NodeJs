@@ -14,6 +14,7 @@ router.post('/message/:email', async (req, res) => {
 
         const user = await User.findOne({ email: req.params.email }).exec();
         const idCurrentUser = user._id;
+        let badge = 0;
 
         const db = admin.database();
 
@@ -21,7 +22,7 @@ router.post('/message/:email', async (req, res) => {
 
         await query.once("value", snapshot => {
 
-            let badge = 0;
+
             let rooms = [];
 
             snapshot.forEach(async child => {
@@ -30,7 +31,9 @@ router.post('/message/:email', async (req, res) => {
                 if ((idCurrentUser === room.iduser1 || idCurrentUser === room.iduser2) && room.lastMessage) {
                     let idUserGuess = "";
 
-                    room.unread === true ? badge++ : badge += 0;
+                    if (room.unread === true) {
+                        badge = badge + 1;
+                    }
 
                     if (room.iduser1 === idCurrentUser) {
                         idUserGuess = room.iduser2;
@@ -48,12 +51,11 @@ router.post('/message/:email', async (req, res) => {
 
                 }
             });
-
-
-            res.json({
-                badge: badge,
-            });
         })
+
+        res.json({
+            badge: badge,
+        });
 
     } catch (err) {
         res.json({ message: err.message });
