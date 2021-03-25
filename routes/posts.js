@@ -5,6 +5,7 @@ const User = require('../models/User');
 const LikePost = require('../models/LikePost');
 const Request = require('../models/Request');
 const Comment = require('../models/Comment');
+const admin = require("firebase-admin");
 
 //Specific post
 router.post('/specific', async (req, res) => {
@@ -258,6 +259,10 @@ router.post('/', async (req, res) => {
     //Hàm save() trả về một promise
     try {
         const savedPost = await post.save();
+        const db = admin.database();
+        db.ref('/posts/' + savedPost._id).set({
+            update: Math.random().toString(36).substring(7)
+        });
 
         //trả về khi save thành công
         res.json({ status: "success", response: savedPost });

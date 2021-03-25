@@ -30,7 +30,7 @@ router.post('/message/:email', async (req, res) => {
                     badge++;
                 }
             });
-        })
+        });
 
         res.json({
             badge: badge,
