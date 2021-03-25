@@ -44,7 +44,8 @@ router.post('/message/:email', async (req, res) => {
         res.json({
             badge: badge,
             count: count,
-            list: listId
+            list: listId,
+            id: idCurrentUser
         });
 
     } catch (err) {
