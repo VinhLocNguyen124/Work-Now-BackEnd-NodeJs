@@ -15,19 +15,20 @@ router.post('/message/:email', async (req, res) => {
         const user = await User.findOne({ email: req.params.email }).exec();
         const idCurrentUser = user._id;
         let badge = 0;
+        let count = 0;
 
         const db = admin.database();
 
-        const query = db.ref('roomchats').orderByKey();
+        const query = db.ref('roomchats');
 
         await query.once("value", snapshot => {
 
-
             let rooms = [];
+            count++;
 
-            snapshot.forEach(async child => {
+            snapshot.forEach(child => {
                 const room = child.val();
-
+                count++;
                 if ((idCurrentUser === room.iduser1 || idCurrentUser === room.iduser2) && room.lastMessage) {
                     let idUserGuess = "";
 
@@ -55,6 +56,7 @@ router.post('/message/:email', async (req, res) => {
 
         res.json({
             badge: badge,
+            count: count
         });
 
     } catch (err) {
