@@ -24,7 +24,6 @@ router.post('/message/:email', async (req, res) => {
         await query.once("value", snapshot => {
 
             let rooms = [];
-            count++;
 
             snapshot.forEach(child => {
                 const room = child.val();
@@ -56,7 +55,8 @@ router.post('/message/:email', async (req, res) => {
 
         res.json({
             badge: badge,
-            count: count
+            count: count,
+            id: idCurrentUser
         });
 
     } catch (err) {
