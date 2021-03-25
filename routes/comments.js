@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Comment = require('../models/Comment');
+const admin = require("firebase-admin");
 
 //Submit one  comment
 router.post('/', async (req, res) => {
@@ -14,8 +15,11 @@ router.post('/', async (req, res) => {
 
     //Hàm save() trả về một promise
     try {
-
         const savedComment = await comment.save();
+        const db = admin.database();
+        await db.ref('/posts/' + req.body.idpost).update({
+            update: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+        })
 
         //trả về khi save thành công
         res.json({

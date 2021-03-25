@@ -260,7 +260,7 @@ router.post('/', async (req, res) => {
     try {
         const savedPost = await post.save();
         const db = admin.database();
-        db.ref('/posts/' + savedPost._id).set({
+        await db.ref('/posts/' + savedPost._id).set({
             update: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
         });
 
