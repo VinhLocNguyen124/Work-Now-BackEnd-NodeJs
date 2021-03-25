@@ -27,7 +27,7 @@ router.post('/message/:email', async (req, res) => {
             snapshot.forEach(child => {
                 const room = child.val();
 
-                if (idCurrentUser === room.iduser1) {
+                if (true) {
                     count++;
                     listId.push({
                         id1: room.iduser1,
