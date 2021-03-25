@@ -16,6 +16,7 @@ router.post('/specific', async (req, res) => {
 
         const userPost = await User.findOne({ email: post.emailuser }).exec();
         const likepost = await LikePost.findOne({ idpost: post._id, iduser: idCurrentUser });
+        const likeNumber = await LikePost.find({ idpost: post._id }).count();
 
         const comments = await Comment.find({ idpost: post._id });
 
@@ -52,6 +53,8 @@ router.post('/specific', async (req, res) => {
             headline: userPost.headline,
             urlavatar: userPost.urlavatar,
             liked: likepost ? true : false,
+            likenumber: likeNumber,
+            cmtnumber: listComment.length,
             comments: listComment
         }
 
