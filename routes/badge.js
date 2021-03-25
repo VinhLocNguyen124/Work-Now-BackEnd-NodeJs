@@ -27,7 +27,7 @@ router.post('/message/:email', async (req, res) => {
             snapshot.forEach(child => {
                 const room = child.val();
 
-                if ((idCurrentUser === room.iduser1 || idCurrentUser === room.iduser2) && room.lastMessage) {
+                if (idCurrentUser === room.iduser1) {
                     count++;
                     listId.push({
                         id1: room.iduser1,
@@ -37,7 +37,6 @@ router.post('/message/:email', async (req, res) => {
                     // if (room.unread === true) {
                     //     badge = badge + 1;
                     // }
-
                 }
             });
         })
