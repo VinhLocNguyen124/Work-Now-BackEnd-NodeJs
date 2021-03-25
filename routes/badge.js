@@ -51,7 +51,7 @@ router.post('/message/:email', async (req, res) => {
                 if (room.unread === true) badge++;
             });
 
-            res.status(200).json({
+            res.json({
                 badge: badge,
             });
         })
