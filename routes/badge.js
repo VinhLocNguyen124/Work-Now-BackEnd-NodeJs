@@ -11,11 +11,12 @@ const admin = require("firebase-admin");
 router.post('/message/:email', async (req, res) => {
 
     try {
+        let badge = 0;
+        let count = 0;
+        let listId = [];
 
         const user = await User.findOne({ email: req.params.email }).exec();
         const idCurrentUser = user._id;
-        let badge = 0;
-        let count = 0;
 
         const db = admin.database();
 
@@ -23,31 +24,19 @@ router.post('/message/:email', async (req, res) => {
 
         await query.once("value", snapshot => {
 
-            let rooms = [];
-
             snapshot.forEach(child => {
                 const room = child.val();
                 count++;
+                listId.push({
+                    id1: room.iduser1,
+                    id2: room.iduser2
+                });
                 if ((idCurrentUser === room.iduser1 || idCurrentUser === room.iduser2) && room.lastMessage) {
-                    let idUserGuess = "";
+
                     badge++;
                     // if (room.unread === true) {
                     //     badge = badge + 1;
                     // }
-
-                    if (room.iduser1 === idCurrentUser) {
-                        idUserGuess = room.iduser2;
-                    } else if (room.iduser2 === idCurrentUser) {
-                        idUserGuess = room.iduser1;
-                    }
-
-                    rooms.push({
-                        _id: child.key,
-                        idguess: idUserGuess,
-                        message: room.lastMessage,
-                        time: room.time,
-                        unread: room.unread
-                    });
 
                 }
             });
@@ -56,7 +45,7 @@ router.post('/message/:email', async (req, res) => {
         res.json({
             badge: badge,
             count: count,
-            id: idCurrentUser
+            list: listId
         });
 
     } catch (err) {
