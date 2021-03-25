@@ -26,26 +26,14 @@ router.post('/message/:email', async (req, res) => {
 
             snapshot.forEach(child => {
                 const room = child.val();
-
-                if ((idCurrentUser == room.iduser1 || idCurrentUser == room.iduser2) && room.lastMessage) {
-                    count++;
-                    listId.push({
-                        id1: room.iduser1,
-                        id2: room.iduser2
-                    });
+                if ((idCurrentUser == room.iduser1 || idCurrentUser == room.iduser2) && room.lastMessage && room.unread == true) {
                     badge++;
-                    // if (room.unread === true) {
-                    //     badge = badge + 1;
-                    // }
                 }
             });
         })
 
         res.json({
             badge: badge,
-            count: count,
-            list: listId,
-            id: idCurrentUser
         });
 
     } catch (err) {
