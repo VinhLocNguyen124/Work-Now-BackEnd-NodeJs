@@ -261,7 +261,7 @@ router.post('/', async (req, res) => {
         const savedPost = await post.save();
         const db = admin.database();
         db.ref('/posts/' + savedPost._id).set({
-            update: Math.random().toString(36).substring(7)
+            update: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
         });
 
         //trả về khi save thành công
