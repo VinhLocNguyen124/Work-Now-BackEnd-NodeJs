@@ -31,10 +31,10 @@ router.post('/message/:email', async (req, res) => {
                 count++;
                 if ((idCurrentUser === room.iduser1 || idCurrentUser === room.iduser2) && room.lastMessage) {
                     let idUserGuess = "";
-
-                    if (room.unread === true) {
-                        badge = badge + 1;
-                    }
+                    badge++;
+                    // if (room.unread === true) {
+                    //     badge = badge + 1;
+                    // }
 
                     if (room.iduser1 === idCurrentUser) {
                         idUserGuess = room.iduser2;
