@@ -69,24 +69,6 @@ router.post('/specific', async (req, res) => {
 //Get  all posts for specific newfeed
 router.get('/:emailcurrentuser', async (req, res) => {
 
-    const postSkeleton = {
-        _id: "a0",
-        emailuser: "",
-        idpostshare: "",
-        content: "",
-        imgurl: "",
-        pdfurl: "",
-        seescope: "anyone",
-        allowcmt: true,
-        formal: true,
-        active: true,
-        date: "01/01/1900",
-        username: "",
-        headline: "",
-        urlavatar: "",
-        liked: false,
-    }
-
     try {
 
         const user = await User.findOne({ email: req.params.emailcurrentuser }).exec();
@@ -102,6 +84,9 @@ router.get('/:emailcurrentuser', async (req, res) => {
                 const likepost = await LikePost.findOne({ idpost: item._id, iduser: idCurrentUser });
                 const request = await Request.findOne({ idusersend: idCurrentUser, iduserrecieve: user._id, status: "done" });
                 const request1 = await Request.findOne({ idusersend: user._id, iduserrecieve: idCurrentUser, status: "done" });
+
+                const likeNumber = await LikePost.find({ idpost: item._id }).count();
+                const cmtNumber = await Comment.find({ idpost: item._id }).count();
 
                 //Kiểm tra posts nào của connector thì mới push, chỉ lấy của bạn
                 if (request || request1) {
@@ -121,6 +106,8 @@ router.get('/:emailcurrentuser', async (req, res) => {
                         headline: user.headline,
                         urlavatar: user.urlavatar,
                         liked: likepost ? true : false,
+                        likenumber: likeNumber,
+                        cmtnumber: cmtNumber
                     })
                 }
 
@@ -140,6 +127,8 @@ router.get('/:emailcurrentuser', async (req, res) => {
                     headline: user.headline,
                     urlavatar: user.urlavatar,
                     liked: likepost ? true : false,
+                    likenumber: likeNumber,
+                    cmtnumber: cmtNumber
                 }
 
             }));
