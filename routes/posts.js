@@ -147,24 +147,6 @@ router.get('/:emailcurrentuser', async (req, res) => {
 //get all post of timeline
 router.get('/timeline/:emailcurrentuser', async (req, res) => {
 
-    const postSkeleton = {
-        _id: "a0",
-        emailuser: "",
-        idpostshare: "",
-        content: "",
-        imgurl: "",
-        pdfurl: "",
-        seescope: "anyone",
-        allowcmt: true,
-        formal: true,
-        active: true,
-        date: "01/01/1900",
-        username: "",
-        headline: "",
-        urlavatar: "",
-        liked: false,
-    }
-
     try {
 
         const user = await User.findOne({ email: req.params.emailcurrentuser }).exec();
@@ -316,16 +298,23 @@ router.post('/dislikepost', async (req, res) => {
 
 
 
-// //Delete post 
-// router.delete('/:postId', async (req, res) => {
+//Delete post 
+router.delete('/delete/:postId', async (req, res) => {
 
-//     try {
-//         const removePost = await Post.remove({ _id: req.params.postId })
-//         res.json(removePost);
-//     } catch (err) {
-//         res.json({ message: err.message });
-//     }
-// });
+    const idpost = req.params.postId;
+
+    try {
+        const deletePost = await Post.deleteMany({ _id: idpost });
+        const deleteLike = await LikePost.deleteMany({ idpost: idpost });
+        const deleteCmt = await Comment.deleteMany({ idpost: idpost });
+
+        res.json({
+            status: "success"
+        });
+    } catch (err) {
+        res.json({ message: err.message });
+    }
+});
 
 // //Update post 
 // router.patch('/:postId', async (req, res) => {
