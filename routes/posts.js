@@ -316,17 +316,31 @@ router.delete('/delete/:postId', async (req, res) => {
     }
 });
 
-// //Update post 
-// router.patch('/:postId', async (req, res) => {
-//     try {
-//         const updatePost = await Post.updateOne(
-//             { _id: req.params.postId },
-//             { $set: { title: req.body.title } }
-//         )
-//         res.json(updatePost);
-//     } catch (err) {
-//         res.json({ message: err.message });
-//     }
-// })
+//Update post 
+router.patch('/update/formal/:postId', async (req, res) => {
+    const idpost = req.params.postId;
+    let formalValue;
+
+    try {
+        const post = await Post.findOne({ _id: idpost }).exec();
+
+        if (post.formal) {
+            formalValue = false;
+        } else {
+            formalValue = true;
+        }
+
+        const updatePost = await Post.updateOne(
+            { _id: idpost },
+            { $set: { formal: formalValue } }
+        );
+
+        res.json({
+            status: "success"
+        });
+    } catch (err) {
+        res.json({ message: err.message });
+    }
+})
 
 module.exports = router;
