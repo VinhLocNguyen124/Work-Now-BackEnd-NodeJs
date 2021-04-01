@@ -53,60 +53,21 @@ router.patch('/update/:cmtID', async (req, res) => {
     }
 })
 
-// //Get all skill
-// router.get('/', async (req, res) => {
-//     try {
+//Delete cmt
+router.delete('/delete/:cmtID', async (req, res) => {
+    const idcmt = req.params.cmtID;
+    try {
 
-//         const skills = await Skill.find();
+        const deleteComment = await Comment.deleteMany({ _id: idcmt })
 
-//         res.json(skills);
+        res.json({
+            status: "success"
+        });
+    } catch (err) {
+        res.json({ message: err });
+    }
 
-//     } catch (err) {
-//         res.json({ message: err });
-//     }
-// });
+});
 
-// //Update user edu
-// router.put('/updateskill/:userskillid', async (req, res) => {
-
-//     try {
-
-//         const updateUserSkill = await UserSkill.updateOne(
-//             { _id: req.params.userskillid },
-//             {
-//                 $set: {
-//                     bestskill: req.body.bestskill
-
-//                 }
-//             }
-//         )
-//         res.json({
-//             status: "success", response: {
-//                 updateUserSkill,
-//             }
-//         });
-//     } catch (err) {
-//         res.json({ message: err });
-//     }
-
-// });
-
-// //Delete user skill
-// router.delete('/deleteskill/:userskillid', async (req, res) => {
-
-//     try {
-
-//         const deleteUserSkill = await UserSkill.deleteOne({ _id: req.params.userskillid })
-
-//         res.json({
-//             status: "success", response: {
-//                 deleteUserSkill,
-//             }
-//         });
-//     } catch (err) {
-//         res.json({ message: err });
-//     }
-
-// });
 
 module.exports = router;
