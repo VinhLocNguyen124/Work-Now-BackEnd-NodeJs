@@ -33,6 +33,26 @@ router.post('/', async (req, res) => {
 
 });
 
+//Update post 
+router.patch('/update/:cmtID', async (req, res) => {
+    const idcmt = req.params.cmtID;
+    const cmtcontent = req.body.cmtcontent;
+
+    try {
+
+        const updateCmt = await Comment.updateOne(
+            { _id: idcmt },
+            { $set: { cmtcontent: cmtcontent } }
+        );
+
+        res.json({
+            status: "success"
+        });
+    } catch (err) {
+        res.json({ message: err.message });
+    }
+})
+
 // //Get all skill
 // router.get('/', async (req, res) => {
 //     try {
