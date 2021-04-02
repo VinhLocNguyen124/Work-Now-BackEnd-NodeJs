@@ -33,10 +33,11 @@ router.post('/', async (req, res) => {
 
 });
 
-//Update post 
+//Update comment
 router.patch('/update/:cmtID', async (req, res) => {
     const idcmt = req.params.cmtID;
     const cmtcontent = req.body.cmtcontent;
+    const idpost = req.body.idpost;
 
     try {
 
@@ -44,6 +45,11 @@ router.patch('/update/:cmtID', async (req, res) => {
             { _id: idcmt },
             { $set: { cmtcontent: cmtcontent } }
         );
+
+        const db = admin.database();
+        await db.ref('/posts/' + idpost).update({
+            update: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+        })
 
         res.json({
             status: "success"
@@ -56,9 +62,15 @@ router.patch('/update/:cmtID', async (req, res) => {
 //Delete cmt
 router.delete('/delete/:cmtID', async (req, res) => {
     const idcmt = req.params.cmtID;
+    const idpost = req.body.idpost;
     try {
 
         const deleteComment = await Comment.deleteMany({ _id: idcmt })
+
+        const db = admin.database();
+        await db.ref('/posts/' + idpost).update({
+            update: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+        })
 
         res.json({
             status: "success"
