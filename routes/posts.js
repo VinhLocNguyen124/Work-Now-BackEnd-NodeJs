@@ -21,6 +21,7 @@ router.post('/specific', async (req, res) => {
         const comments = await Comment.find({ idpost: post._id });
 
         let listComment = [];
+
         if (comments.length > 0) {
             listComment = await Promise.all(comments.map(async item => {
 
@@ -36,6 +37,8 @@ router.post('/specific', async (req, res) => {
                 }
             }));
         }
+
+        const shortCommentList = [listComment[listComment.length - 2], listComment[listComment.length - 1]];
 
         const newPost = {
             _id: post._id,
@@ -55,7 +58,8 @@ router.post('/specific', async (req, res) => {
             liked: likepost ? true : false,
             likenumber: likeNumber,
             cmtnumber: listComment.length,
-            comments: listComment
+            comments: listComment,
+            shortComments: shortCommentList
         }
 
 
