@@ -38,7 +38,13 @@ router.post('/specific', async (req, res) => {
             }));
         }
 
-        const shortCommentList = [listComment[listComment.length - 2], listComment[listComment.length - 1]];
+        let shortCommentList = [];
+        if (listComment.length > 5) {
+            shortCommentList = [listComment[listComment.length - 5], listComment[listComment.length - 4], listComment[listComment.length - 3], listComment[listComment.length - 2], listComment[listComment.length - 1]];
+        } else {
+            shortCommentList = listComment;
+        }
+
 
         const newPost = {
             _id: post._id,
