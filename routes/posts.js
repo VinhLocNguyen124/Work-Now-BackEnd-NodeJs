@@ -256,6 +256,33 @@ router.post('/', async (req, res) => {
 
 });
 
+//Update a specific post
+router.patch('/update/content/:postID', async (req, res) => {
+
+    const idpost = req.params.postID;
+    const content = req.body.content;
+    const imgurl = req.body.imgurl;
+
+    try {
+
+        const updatePost = await Post.updateOne(
+            { _id: idpost },
+            {
+                $set: {
+                    content: content,
+                    imgurl: imgurl
+                }
+            }
+        );
+
+        //trả về khi save thành công
+        res.json({ status: "success" });
+    } catch (err) {
+        res.json({ message: err.message });
+    }
+
+});
+
 //User like post
 router.post('/likepost', async (req, res) => {
 
