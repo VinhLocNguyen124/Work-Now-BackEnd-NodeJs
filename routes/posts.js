@@ -80,10 +80,13 @@ router.post('/specific', async (req, res) => {
 router.get('/:emailcurrentuser', async (req, res) => {
 
     try {
+        //Tìm tất cả bài viết
+        //Lọc ra bài anyone và connection only
+        //lọc ra bạn
 
         const user = await User.findOne({ email: req.params.emailcurrentuser }).exec();
         const idCurrentUser = user._id;
-        const posts = await Post.find({ seescope: "anyone" }).sort({ _id: -1 });
+        const posts = await Post.find().sort({ _id: -1 });
 
         let newListPost = [];
         let newListFriendPost = [];
