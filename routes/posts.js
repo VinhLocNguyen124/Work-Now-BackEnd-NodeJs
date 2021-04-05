@@ -81,8 +81,10 @@ router.get('/:emailcurrentuser', async (req, res) => {
 
     try {
         //Tìm tất cả bài viết
-        //Lọc ra bài anyone và connection only
-        //lọc ra bạn
+        //lọc ra 2 mảng post
+        //một mảng đề xuất gồm các bài viết seescope = "anyone"
+        //một mảng các bài post trong danh sách connection (là bạn bè thì sẽ thấy kể cả anyone và connection của seescope)
+        //Nếu danh sách post của bạn bè ngắn hơn 50 bài thì sẽ thêm các bài viết đề xuất
 
         const user = await User.findOne({ email: req.params.emailcurrentuser }).exec();
         const idCurrentUser = user._id;
@@ -90,6 +92,7 @@ router.get('/:emailcurrentuser', async (req, res) => {
 
         let newListPost = [];
         let newListFriendPost = [];
+        let listPostRecommend = [];
         if (posts.length > 0) {
             newListPost = await Promise.all(posts.map(async item => {
 
@@ -120,8 +123,39 @@ router.get('/:emailcurrentuser', async (req, res) => {
                         urlavatar: user.urlavatar,
                         liked: likepost ? true : false,
                         likenumber: likeNumber,
-                        cmtnumber: cmtNumber
+                        cmtnumber: cmtNumber,
+                        recommend: false
                     })
+                }
+
+                if (item.seescope === "anyone" || request || request1) {
+                    let recomm = false;
+
+                    if (item.seescope === "anyone" && !request && !request1) {
+                        recomm = true;
+                    }
+
+                    listPostRecommend.push({
+                        _id: item._id,
+                        emailuser: item.emailuser,
+                        idpostshare: item.idpostshare,
+                        content: item.content,
+                        imgurl: item.imgurl,
+                        pdfurl: item.pdfurl,
+                        seescope: item.seescope,
+                        allowcmt: item.allowcmt,
+                        formal: item.formal,
+                        active: item.active,
+                        date: item.date,
+                        username: user.username,
+                        headline: user.headline,
+                        urlavatar: user.urlavatar,
+                        liked: likepost ? true : false,
+                        likenumber: likeNumber,
+                        cmtnumber: cmtNumber,
+                        recommend: recomm
+                    })
+
                 }
 
                 return {
@@ -141,14 +175,15 @@ router.get('/:emailcurrentuser', async (req, res) => {
                     urlavatar: user.urlavatar,
                     liked: likepost ? true : false,
                     likenumber: likeNumber,
-                    cmtnumber: cmtNumber
+                    cmtnumber: cmtNumber,
+                    recommend: false
                 }
 
             }));
         }
 
         if (newListFriendPost.length < 50) {
-            newListFriendPost = newListPost;
+            newListFriendPost = listPostRecommend;
         }
 
         res.json(newListFriendPost);
