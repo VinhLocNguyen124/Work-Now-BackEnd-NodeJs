@@ -79,6 +79,7 @@ router.post('/specific', async (req, res) => {
 //Get  all posts for specific newfeed
 router.get('/:emailcurrentuser', async (req, res) => {
 
+    const emailUser = req.params.emailcurrentuser;
     try {
         //Tìm tất cả bài viết
         //lọc ra 2 mảng post
@@ -86,8 +87,8 @@ router.get('/:emailcurrentuser', async (req, res) => {
         //một mảng các bài post trong danh sách connection (là bạn bè thì sẽ thấy kể cả anyone và connection của seescope)
         //Nếu danh sách post của bạn bè ngắn hơn 50 bài thì sẽ thêm các bài viết đề xuất
 
-        const user = await User.findOne({ email: req.params.emailcurrentuser }).exec();
-        const idCurrentUser = user._id;
+        const _user = await User.findOne({ email: emailUser }).exec();
+        const idCurrentUser = _user._id;
         const posts = await Post.find().sort({ date: -1 });
 
         let newListPost = [];
@@ -104,8 +105,8 @@ router.get('/:emailcurrentuser', async (req, res) => {
                 const likeNumber = await LikePost.find({ idpost: item._id }).count();
                 const cmtNumber = await Comment.find({ idpost: item._id }).count();
 
-                //Kiểm tra posts nào của connector thì mới push, chỉ lấy của bạn
-                if (request || request1) {
+                //Kiểm tra posts nào của connector thì mới push, chỉ lấy của bạn và của chính mình
+                if (request || request1 || emailUser === item.emailuser) {
                     newListFriendPost.push({
                         _id: item._id,
                         emailuser: item.emailuser,
@@ -128,7 +129,7 @@ router.get('/:emailcurrentuser', async (req, res) => {
                     })
                 }
 
-                if (item.seescope === "anyone" || request || request1) {
+                if (item.seescope === "anyone" || request || request1 || emailUser === item.emailuser) {
                     let recomm = false;
 
                     if (item.seescope === "anyone" && !request && !request1) {
