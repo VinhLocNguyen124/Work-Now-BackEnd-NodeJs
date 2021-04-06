@@ -15,7 +15,14 @@ router.post('/', async (req, res) => {
 
     //Hàm save() trả về một promise
     try {
-        const savedRequest = await request.save();
+        const requestCheckExist = await Request.findOne({
+            idusersend: req.body.idusersend,
+            iduserrecieve: req.body.iduserrecieve,
+        });
+
+        if (!requestCheckExist) {
+            const savedRequest = await request.save();
+        }
 
         //trả về khi save thành công
         res.json({
