@@ -21,14 +21,12 @@ router.post('/', async (req, res) => {
         });
 
         if (!requestCheckExist) {
-            const savedRequest = await request.save();
+            await request.save();
         }
 
         //trả về khi save thành công
         res.json({
-            status: "success", response: {
-                savedRequest,
-            }
+            status: "success"
         });
 
     } catch (err) {
