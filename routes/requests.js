@@ -20,13 +20,18 @@ router.post('/', async (req, res) => {
             iduserrecieve: req.body.iduserrecieve,
         });
 
-        if (!requestCheckExist) {
+        const requestCheckExistReverse = await Request.findOne({
+            idusersend: req.body.iduserrecieve,
+            iduserrecieve: req.body.idusersend,
+        });
+
+        if (!requestCheckExist && !requestCheckExistReverse) {
             await request.save();
         }
 
         //trả về khi save thành công
         res.json({
-            status: "success"
+            status: "success",
         });
 
     } catch (err) {
