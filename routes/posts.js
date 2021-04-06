@@ -110,6 +110,7 @@ router.get('/:emailcurrentuser', async (req, res) => {
                     newListFriendPost.push({
                         _id: item._id,
                         emailuser: item.emailuser,
+                        iduser: user._id,
                         idpostshare: item.idpostshare,
                         content: item.content,
                         imgurl: item.imgurl,
@@ -139,6 +140,7 @@ router.get('/:emailcurrentuser', async (req, res) => {
                     listPostRecommend.push({
                         _id: item._id,
                         emailuser: item.emailuser,
+                        iduser: user._id,
                         idpostshare: item.idpostshare,
                         content: item.content,
                         imgurl: item.imgurl,
@@ -162,6 +164,7 @@ router.get('/:emailcurrentuser', async (req, res) => {
                 return {
                     _id: item._id,
                     emailuser: item.emailuser,
+                    iduser: user._id,
                     idpostshare: item.idpostshare,
                     content: item.content,
                     imgurl: item.imgurl,
