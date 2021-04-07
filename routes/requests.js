@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const admin = require("firebase-admin");
 const Post = require('../models/Post');
 const User = require('../models/User');
 const Request = require('../models/Request');
@@ -27,6 +28,14 @@ router.post('/', async (req, res) => {
 
         if (!requestCheckExist && !requestCheckExistReverse) {
             await request.save();
+
+            const db = admin.database();
+            await db.ref('/users/' + req.body.idusersend).set({
+                request: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+            });
+            await db.ref('/users/' + req.body.iduserrecieve).set({
+                request: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
+            });
         }
 
         //trả về khi save thành công
@@ -74,7 +83,6 @@ router.put('/acceptrequest/:idrequest', async (req, res) => {
         res.json({ message: err.message });
     }
 })
-
 
 //Check relationship
 router.post('/checkrelationship', async (req, res) => {
@@ -181,7 +189,7 @@ router.delete('/disconnect/:idconnect', async (req, res) => {
 
 });
 
-//submit a request
+//Search friend
 router.post('/search/friends', async (req, res) => {
 
     const textSearch = req.body.textSearch;
