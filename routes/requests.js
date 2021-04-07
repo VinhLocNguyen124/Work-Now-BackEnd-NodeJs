@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
     });
 
     try {
-        const userRecieveToken = await findUserTokenByID(req.body.iduserrecieve);
+        const userRecieveToken = await findUserTokenByID.findUserTokenByID(req.body.iduserrecieve);
         const user = await User.findOne({ _id: req.body.idusersend }).exec();
 
 
