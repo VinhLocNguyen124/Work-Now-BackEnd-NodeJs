@@ -48,12 +48,15 @@ router.post('/message/:iduser', async (req, res) => {
     const roomkey = req.body.roomkey;
     const messageContent = req.body.messageContent;
     const lastMessageSendingTime = req.body.lastMessageSendingTime;
+
+    //Tính toán thời gian tin nhắn cuối cùng được gửi cho đến hiện tại
     const sendingPeriod = (Date.now() - Number(lastMessageSendingTime)) / 1000 / 60 / 60;
 
 
     try {
 
         const guessToken = await findGuessToken.findGuessToken(roomkey, iduser);
+        //Nếu khoảng thời gian lớn hơn 1 giờ -> bắn noti
         if (sendingPeriod > 1) {
             await noti.sendNotification(guessToken, username, messageContent, urlavatar);
         }

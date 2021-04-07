@@ -5,6 +5,9 @@ const Post = require('../models/Post');
 const User = require('../models/User');
 const Request = require('../models/Request');
 
+const noti = require("../helpers/notification");
+const findUserTokenByID = require("../helpers/findUserTokenByID");
+
 //submit a request
 router.post('/', async (req, res) => {
 
@@ -14,8 +17,11 @@ router.post('/', async (req, res) => {
         status: req.body.status,
     });
 
-    //Hàm save() trả về một promise
     try {
+        const userRecieveToken = await findUserTokenByID(req.body.iduserrecieve);
+        const user = await User.findOne({ _id: req.body.idusersend }).exec();
+
+
         const requestCheckExist = await Request.findOne({
             idusersend: req.body.idusersend,
             iduserrecieve: req.body.iduserrecieve,
@@ -29,10 +35,9 @@ router.post('/', async (req, res) => {
         if (!requestCheckExist && !requestCheckExistReverse) {
             await request.save();
 
+            await noti.sendNotification(userRecieveToken, "Thông báo kết bạn !", `${user.username} vừa gửi cho bạn một lời mời kết nối. Bạn có quen ${user.username} không?`, user.urlavatar);
+
             const db = admin.database();
-            await db.ref('/users/' + req.body.idusersend).update({
-                request: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-            });
             await db.ref('/users/' + req.body.iduserrecieve).update({
                 request: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
             });
