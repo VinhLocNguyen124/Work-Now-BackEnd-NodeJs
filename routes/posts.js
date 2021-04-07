@@ -448,4 +448,31 @@ router.patch('/update/seescope/:postId', async (req, res) => {
     }
 })
 
+//Update post active: true => recieve noti, false => dont recieve noti
+router.patch('/update/active/:postId', async (req, res) => {
+    const idpost = req.params.postId;
+    let activeValue;
+
+    try {
+        const post = await Post.findOne({ _id: idpost }).exec();
+
+        if (post.active) {
+            activeValue = false;
+        } else {
+            activeValue = true;
+        }
+
+        const updatePost = await Post.updateOne(
+            { _id: idpost },
+            { $set: { active: activeValue } }
+        );
+
+        res.json({
+            status: "success"
+        });
+    } catch (err) {
+        res.json({ message: err.message });
+    }
+})
+
 module.exports = router;
