@@ -376,7 +376,6 @@ router.post('/dislikepost', async (req, res) => {
 })
 
 
-
 //Delete post 
 router.delete('/delete/:postId', async (req, res) => {
 
@@ -395,7 +394,7 @@ router.delete('/delete/:postId', async (req, res) => {
     }
 });
 
-//Update post 
+//Update post formal
 router.patch('/update/formal/:postId', async (req, res) => {
     const idpost = req.params.postId;
     let formalValue;
@@ -412,6 +411,33 @@ router.patch('/update/formal/:postId', async (req, res) => {
         const updatePost = await Post.updateOne(
             { _id: idpost },
             { $set: { formal: formalValue } }
+        );
+
+        res.json({
+            status: "success"
+        });
+    } catch (err) {
+        res.json({ message: err.message });
+    }
+})
+
+//Update post seescope
+router.patch('/update/seescope/:postId', async (req, res) => {
+    const idpost = req.params.postId;
+    let seescopeValue;
+
+    try {
+        const post = await Post.findOne({ _id: idpost }).exec();
+
+        if (post.seescope === "anyone") {
+            seescopeValue = "connection";
+        } else {
+            seescopeValue = "anyone";
+        }
+
+        const updatePost = await Post.updateOne(
+            { _id: idpost },
+            { $set: { seescope: seescopeValue } }
         );
 
         res.json({
