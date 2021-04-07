@@ -30,10 +30,10 @@ router.post('/', async (req, res) => {
             await request.save();
 
             const db = admin.database();
-            await db.ref('/users/' + req.body.idusersend).set({
+            await db.ref('/users/' + req.body.idusersend).update({
                 request: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
             });
-            await db.ref('/users/' + req.body.iduserrecieve).set({
+            await db.ref('/users/' + req.body.iduserrecieve).update({
                 request: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
             });
         }
