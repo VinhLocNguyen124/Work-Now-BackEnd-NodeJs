@@ -25,16 +25,18 @@ router.post('/', async (req, res) => {
 
         const savedComment = await comment.save();
 
+        //Gửi thông báo
+        // if (post.active && req.body.iduser !== iduserRecieveNoti) {
+        await noti.sendNotification(tokenUserRecieveNoti, "Thông báo tương tác", `${interactionUser.username} đã bình luận về bài viết của bạn`, interactionUser.urlavatar)
+        // }
+
         //trigger gửi về client
         const db = admin.database();
         await db.ref('/posts/' + req.body.idpost).update({
             update: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
         });
 
-        //Gửi thông báo
-        if (post.active && req.body.iduser !== iduserRecieveNoti) {
-            await noti.sendNotification(tokenUserRecieveNoti, "Thông báo tương tác", `${interactionUser.username} đã bình luận về bài viết của bạn`, interactionUser.urlavatar)
-        }
+
 
         //trả về khi save thành công
         res.json({
