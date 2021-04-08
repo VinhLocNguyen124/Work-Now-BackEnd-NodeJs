@@ -18,17 +18,16 @@ router.post('/', async (req, res) => {
 
     //Hàm save() trả về một promise
     try {
-        const post = await Post.findOne({ _id: req.body.idpost }).exec();
         const interactionUser = await User.findOne({ _id: req.body.iduser }).exec();
-        const iduserRecieveNoti = post.iduser;
+        const iduserRecieveNoti = req.body.iduserRecieveNoti;
         const tokenUserRecieveNoti = await findUserTokenByID.findUserTokenByID(iduserRecieveNoti);
 
         const savedComment = await comment.save();
 
         //Gửi thông báo
-        // if (post.active && req.body.iduser !== iduserRecieveNoti) {
-        await noti.sendNotification(tokenUserRecieveNoti, "Thông báo tương tác", `${interactionUser.username} đã bình luận về bài viết của bạn`, interactionUser.urlavatar)
-        // }
+        if (post.active && req.body.iduser !== iduserRecieveNoti) {
+            await noti.sendNotification(tokenUserRecieveNoti, "Thông báo tương tác", `${interactionUser.username} đã bình luận về bài viết của bạn`, interactionUser.urlavatar)
+        }
 
         //trigger gửi về client
         const db = admin.database();
@@ -36,13 +35,9 @@ router.post('/', async (req, res) => {
             update: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
         });
 
-
-
         //trả về khi save thành công
         res.json({
-            status: "success", response: {
-                savedComment,
-            }
+            status: "success",
         });
     } catch (err) {
         res.json({ message: err });
