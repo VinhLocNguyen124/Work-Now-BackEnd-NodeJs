@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
+const Post = require('../models/Post');
 const Comment = require('../models/Comment');
 const admin = require("firebase-admin");
+const noti = require("../helpers/notification");
+const findUserTokenByID = require("../helpers/findUserTokenByID");
 
 //Submit one  comment
 router.post('/', async (req, res) => {
@@ -15,11 +18,23 @@ router.post('/', async (req, res) => {
 
     //Hàm save() trả về một promise
     try {
+        const post = await Post.findOne({ _id: req.body.idpost }).exec();
+        const interactionUser = await User.findOne({ _id: req.body.iduser }).exec();
+        const iduserRecieveNoti = post.iduser;
+        const tokenUserRecieveNoti = await findUserTokenByID.findUserTokenByID(iduserRecieveNoti);
+
         const savedComment = await comment.save();
+
+        //trigger gửi về client
         const db = admin.database();
         await db.ref('/posts/' + req.body.idpost).update({
             update: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15)
-        })
+        });
+
+        //Gửi thông báo
+        if (post.active && req.body.iduser !== iduserRecieveNoti) {
+            await noti.sendNotification(tokenUserRecieveNoti, "Thông báo tương tác", `${interactionUser.username} đã bình luận về bài viết của bạn`, interactionUser.urlavatar)
+        }
 
         //trả về khi save thành công
         res.json({
